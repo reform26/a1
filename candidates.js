@@ -1,6 +1,7 @@
 /* candidates.js */
+/* 중요: index.html에서 인식할 수 있도록 window 객체에 할당합니다. */
 
-// 1. 지역 우선순위 데이터 (전역 window 객체에 할당)
+// 1. 지역 우선순위 데이터
 window.regionPriority = { 
     "서울특별시": 1, 
     "부산광역시": 2, 
@@ -21,7 +22,7 @@ window.regionPriority = {
     "제주특별자치도": 17 
 };
 
-// 2. 후보자 명단 데이터 (전역 window 객체에 할당)
+// 2. 후보자 명단 데이터
 window.candidates = [
     { name: "김정철", region: "서울특별시", category: "광역단체장", office: "서울특별시장", bio: ["개혁신당 최고위원", "개혁신당 윤리위원"], photo: "https://img1.newsis.com/2025/11/25/NISI20251125_0021074114_web.jpg", sns: { fb: "https://www.facebook.com/gimjeongcheol.869066/", yt: "https://www.youtube.com/@%EA%B9%80%EC%A0%95%EC%B2%A0%EB%B3%80%ED%98%B8%EC%82%AC" }, decl: "https://daily.hankooki.com/news/articleView.html?idxno=1247318", dateAdded: "2025-11-25" },
     { name: "정이한", region: "부산광역시", category: "광역단체장", office: "부산광역시장", bio: ["개혁신당 대변인"], photo: "https://cdn.seoulfn.com/news/photo/202511/612324_411809_430.jpg", sns: { fb: "https://www.facebook.com/jeong21official", ig: "https://www.instagram.com/jeong21_official", yt: "https://www.youtube.com/@jeong21tv" }, decl: "https://youtube.com/shorts/M88-dOI_Uz4?si=YjhleHQGtMmJBVPF", dateAdded: "2025-11-25" },
