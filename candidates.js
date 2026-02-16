@@ -1,9 +1,27 @@
 /* candidates.js */
 
-// 지역 우선순위 데이터
-window.regionPriority = { "서울특별시": 1, "부산광역시": 2, "대구광역시": 3, "인천광역시": 4, "광주광역시": 5, "대전광역시": 6, "울산광역시": 7, "세종특별자치시": 8, "경기도": 9, "강원특별자치도": 10, "충청북도": 11, "충청남도": 12, "전북특별자치도": 13, "전라남도": 14, "경상북도": 15, "경상남도": 16, "제주특별자치도": 17 };
+// 1. 지역 우선순위 데이터 (전역 window 객체에 할당)
+window.regionPriority = { 
+    "서울특별시": 1, 
+    "부산광역시": 2, 
+    "대구광역시": 3, 
+    "인천광역시": 4, 
+    "광주광역시": 5, 
+    "대전광역시": 6, 
+    "울산광역시": 7, 
+    "세종특별자치시": 8, 
+    "경기도": 9, 
+    "강원특별자치도": 10, 
+    "충청북도": 11, 
+    "충청남도": 12, 
+    "전북특별자치도": 13, 
+    "전라남도": 14, 
+    "경상북도": 15, 
+    "경상남도": 16, 
+    "제주특별자치도": 17 
+};
 
-// 후보자 명단 데이터
+// 2. 후보자 명단 데이터 (전역 window 객체에 할당)
 window.candidates = [
     { name: "김정철", region: "서울특별시", category: "광역단체장", office: "서울특별시장", bio: ["개혁신당 최고위원", "개혁신당 윤리위원"], photo: "https://img1.newsis.com/2025/11/25/NISI20251125_0021074114_web.jpg", sns: { fb: "https://www.facebook.com/gimjeongcheol.869066/", yt: "https://www.youtube.com/@%EA%B9%80%EC%A0%95%EC%B2%A0%EB%B3%80%ED%98%B8%EC%82%AC" }, decl: "https://daily.hankooki.com/news/articleView.html?idxno=1247318", dateAdded: "2025-11-25" },
     { name: "정이한", region: "부산광역시", category: "광역단체장", office: "부산광역시장", bio: ["개혁신당 대변인"], photo: "https://cdn.seoulfn.com/news/photo/202511/612324_411809_430.jpg", sns: { fb: "https://www.facebook.com/jeong21official", ig: "https://www.instagram.com/jeong21_official", yt: "https://www.youtube.com/@jeong21tv" }, decl: "https://youtube.com/shorts/M88-dOI_Uz4?si=YjhleHQGtMmJBVPF", dateAdded: "2025-11-25" },
@@ -28,7 +46,6 @@ window.candidates = [
     { name: "김순주", region: "세종특별자치시", metropolitan: "세종특별자치시", shortMetro: "세종", district: "4", constituencyFull: "세종특별자치시 제4선거구", category: "광역의원", office: "세종시의회", status: "후보", subRegion: "연기면, 연동면, 연서면, 해밀동", bio: ["세종특별자치시 제4선거구 후보"], photo: "", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-09" },
     { name: "이건우", region: "제주특별자치도", metropolitan: "제주특별자치도", shortMetro: "제주", district: "제주 노형", constituencyFull: "제주시 노형동 선거구", category: "광역의원", office: "제주도의원", status: "후보", subRegion: "제주시 노형동", bio: ["개혁신당 노형동 지역발전특별위원장"], photo: "", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
     { name: "양해두", region: "제주특별자치도", metropolitan: "제주특별자치도", shortMetro: "제주", district: "제주 외도·이호·도두", category: "광역의원", office: "제주도의원", status: "후보", subRegion: "외도동, 이호동, 도두동", bio: ["제주시 갑 당협위원장", "제21대 대선 선대위 홍보부본부장"], photo: "https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202601/07/kbs/20260107150152592uwgk.jpg", sns: { fb: "https://www.facebook.com/profile.php?id=100007883867189#", ig: "https://www.instagram.com/haeduyang/" }, decl: "https://www.facebook.com/share/p/17qQErhuYr/", dateAdded: "2026-01-26" },
-    // 기초의원 카테고리
     { name: "이규민", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", subRegion: "삼성1동, 삼성2동, 대치2동", bio: ["강남구 마선거구 후보"], photo: "", district: "마", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
     { name: "구성도", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", subRegion: "개포1동, 개포2동, 개포4동", bio: ["강남구 라선거구 후보"], photo: "", district: "라", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-09" },
     { name: "박종길", region: "대구 달서구", metropolitan: "대구광역시", category: "기초의원", office: "기초의원", status: "출마선언", subRegion: "이곡1동, 이곡2동, 신당동", bio: ["제8, 9대 달서구의원 (재선)", "<span style='letter-spacing:-0.15em;'>전) 제9대 달서구의회 복지문화위원장</span>", "<span style='letter-spacing:-0.15em;'>전) 제8대 달서구의회 윤리특별위원장</span>"], photo: "https://www.dalseocouncil.daegu.kr/images/memberHome/inc/leftvisible_8050.jpg?v=1.666", district: "나", sns: { fb: "#" }, decl: "https://www.youtube.com/live/ixdTcenUjMw?si=62KazlMWdC6ciOpY", dateAdded: "2026-02-12" },
@@ -101,19 +118,3 @@ window.candidates = [
     { name: "김영민", region: "서울 강동구", metropolitan: "서울특별시", category: "기초의원", office: "강동구의원", status: "출마예정", subRegion: "성내1·2·3동, 둔촌제1·2동", bio: ["서울시당 환경위원장"], photo: "", district: "바", sns: { fb: "https://www.facebook.com/profile.php?id=61557084968016" }, decl: "#", dateAdded: "2026-02-15" },
     { name: "손승범", region: "충남 천안시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "출마선언", subRegion: "봉명동, 성정1동, 성정2동, 문성동", bio: ["전) 충남도당 대학생 대변인"], photo: "https://i.imgur.com/tgnxWFB.png", district: "다", sns: { ig: "https://www.instagram.com/sonseungbeom2004/" }, decl: "https://rallypoint.kr/board/politics-free/225934", dateAdded: "2026-02-15" }
 ];
-
-/* 3. index.html의 스크립트 수정 */
-/* index.html 파일 내의 다음 스크립트 부분을 수정해야 합니다 */
-
-// ... (기존 index.html 내용 중 script 태그 부분) ...
-
-// [기존 코드 삭제 필요]
-// const regionPriority = { ... };
-// const candidates = [ ... ];
-
-// [새 코드 추가]
-// window 객체에 할당된 데이터를 변수에 저장합니다.
-const regionPriority = window.regionPriority;
-const candidates = window.candidates;
-
-// ... (나머지 로직은 그대로 유지) ...
