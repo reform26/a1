@@ -57,172 +57,45 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
+    <script src="data.js?v=20260216"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
         
         html { scroll-behavior: smooth; transition: background-color 0.3s ease; }
-        body {
-            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-            background-color: #f8f9fa;
-            color: #1a1a1a;
-            letter-spacing: -0.025em;
-            word-break: keep-all;
-        }
-
-        .dark body {
-            background-color: #0f172a;
-            color: #f1f5f9;
-        }
-
-        #entry-popup-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            align-items: center; justify-content: center;
-            padding: 20px;
-            transition: opacity 0.3s ease-out;
-        }
-
+        body { font-family: 'Pretendard', 'Noto Sans KR', sans-serif; background-color: #f8f9fa; color: #1a1a1a; letter-spacing: -0.025em; word-break: keep-all; }
+        .dark body { background-color: #0f172a; color: #f1f5f9; }
+        #entry-popup-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.3s ease-out; }
         .nrp-orange { color: #FF6600; }
         .nrp-bg-orange { background-color: #FF6600; }
-        .header-gradient {
-            background: linear-gradient(to bottom, rgba(255, 102, 0, 0.12) 0%, rgba(255, 102, 0, 0.05) 50%, transparent 100%);
-            border-radius: 0 0 3rem 3rem;
-        }
-        .dark .header-gradient {
-            background: linear-gradient(to bottom, rgba(255, 102, 0, 0.2) 0%, rgba(15, 23, 42, 0.5) 50%, #0f172a 100%);
-        }
-
+        .header-gradient { background: linear-gradient(to bottom, rgba(255, 102, 0, 0.12) 0%, rgba(255, 102, 0, 0.05) 50%, transparent 100%); border-radius: 0 0 3rem 3rem; }
+        .dark .header-gradient { background: linear-gradient(to bottom, rgba(255, 102, 0, 0.2) 0%, rgba(15, 23, 42, 0.5) 50%, #0f172a 100%); }
         .nav-container::-webkit-scrollbar { display: none; }
         .nav-container { -ms-overflow-style: none; scrollbar-width: none; }
-
-        @media (min-width: 640px) {
-            .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-            .dark .card-hover:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        }
-        
-        .region-tag {
-            position: absolute; top: 8px; left: 10px;
-            background-color: rgba(255, 102, 0, 0.9);
-            color: white; padding: 3px 8px; border-radius: 5px;
-            font-size: 0.6rem; font-weight: 700; z-index: 10; backdrop-filter: blur(4px);
-        }
-
-        .new-badge {
-            display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            background-color: #FF6600 !important;
-            color: white !important;
-            padding: 2px 7px !important;
-            border-radius: 6px !important;
-            font-size: 0.6rem !important;
-            font-weight: 900 !important;
-            margin-left: 6px !important;
-            vertical-align: middle !important;
-            line-height: 1 !important;
-            box-shadow: 0 2px 5px rgba(255, 102, 0, 0.4) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            height: 18px;
-            transform: translateY(-2px);
-            text-transform: uppercase;
-        }
-
-        .district-tag {
-            position: absolute; top: 8px; right: 10px;
-            background-color: white; color: #FF6600; border: 1.5px solid #FF6600;
-            min-width: 22px; height: 22px; padding: 0 6px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 11px; font-size: 0.65rem; font-weight: 800;
-            z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.05); white-space: nowrap;
-        }
-
-        .confirmed-badge {
-            position: absolute; bottom: 8px; right: 10px;
-            background-color: #FF6600; 
-            color: white; 
-            padding: 3px 8px; 
-            border-radius: 8px;
-            font-size: 0.7rem; 
-            font-weight: 900; 
-            z-index: 10;
-            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.4);
-            letter-spacing: -0.02em;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .grid-responsive { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 0.75rem; 
-        }
-        @media (min-width: 640px) { 
-            .grid-responsive { 
-                grid-template-columns: repeat(4, 1fr); 
-                gap: 1.25rem; 
-            } 
-        }
-        @media (min-width: 1024px) { 
-            .grid-responsive { 
-                grid-template-columns: repeat(5, 1fr); 
-            } 
-        }
-
-        .photo-frame { 
-            height: 180px; 
-            background-color: #f1f3f5; 
-            overflow: hidden; 
-            position: relative; 
-            width: 100%; 
-        }
+        @media (min-width: 640px) { .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); } .dark .card-hover:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.4); } }
+        .region-tag { position: absolute; top: 8px; left: 10px; background-color: rgba(255, 102, 0, 0.9); color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.6rem; font-weight: 700; z-index: 10; backdrop-filter: blur(4px); }
+        .new-badge { display: inline-flex !important; align-items: center; justify-content: center; background-color: #FF6600 !important; color: white !important; padding: 2px 7px !important; border-radius: 6px !important; font-size: 0.6rem !important; font-weight: 900 !important; margin-left: 6px !important; vertical-align: middle !important; line-height: 1 !important; box-shadow: 0 2px 5px rgba(255, 102, 0, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.2); height: 18px; transform: translateY(-2px); text-transform: uppercase; }
+        .district-tag { position: absolute; top: 8px; right: 10px; background-color: white; color: #FF6600; border: 1.5px solid #FF6600; min-width: 22px; height: 22px; padding: 0 6px; display: flex; align-items: center; justify-content: center; border-radius: 11px; font-size: 0.65rem; font-weight: 800; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.05); white-space: nowrap; }
+        .confirmed-badge { position: absolute; bottom: 8px; right: 10px; background-color: #FF6600; color: white; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 900; z-index: 10; box-shadow: 0 4px 10px rgba(255, 102, 0, 0.4); letter-spacing: -0.02em; display: flex; align-items: center; gap: 3px; border: 1px solid rgba(255, 255, 255, 0.3); }
+        .grid-responsive { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+        @media (min-width: 640px) { .grid-responsive { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+        @media (min-width: 1024px) { .grid-responsive { grid-template-columns: repeat(5, 1fr); } }
+        .photo-frame { height: 180px; background-color: #f1f3f5; overflow: hidden; position: relative; width: 100%; }
         .dark .photo-frame { background-color: #1e293b; }
-        @media (min-width: 640px) { 
-            .photo-frame { height: 240px; } 
-        }
-        
-        .candidate-photo { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block; 
-            transition: transform 0.3s ease;
-        }
-        
+        @media (min-width: 640px) { .photo-frame { height: 240px; } }
+        .candidate-photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
         .photo-face-focus { object-position: center top !important; }
-        
-        .section-title {
-            display: flex; align-items: center; font-size: 1.2rem; font-weight: 800;
-            margin: 2rem 0 0.75rem 0; color: #1a202c;
-        }
+        .section-title { display: flex; align-items: center; font-size: 1.2rem; font-weight: 800; margin: 2rem 0 0.75rem 0; color: #1a202c; }
         .dark .section-title { color: #f1f5f9; }
         @media (min-width: 640px) { .section-title { font-size: 1.6rem; margin: 3rem 0 1.25rem 0; } }
         .section-title::before { content: ""; width: 5px; height: 22px; background-color: #FF6600; margin-right: 10px; border-radius: 2px; }
-
-        .sub-section-title {
-            font-size: 1rem; font-weight: 700; color: #4a5568; margin-bottom: 1rem;
-            padding-left: 4px; border-left: 3px solid #cbd5e0; margin-left: 2px;
-        }
+        .sub-section-title { font-size: 1rem; font-weight: 700; color: #4a5568; margin-bottom: 1rem; padding-left: 4px; border-left: 3px solid #cbd5e0; margin-left: 2px; }
         .dark .sub-section-title { color: #94a3b8; border-left-color: #475569; }
-
-        .bio-text {
-            font-size: 0.65rem; color: #718096; margin-bottom: 0.5rem; height: 3.5rem; 
-            display: flex; flex-direction: column; justify-content: center;
-            font-weight: 600; line-height: 1.3; overflow: hidden;
-        }
+        .bio-text { font-size: 0.65rem; color: #718096; margin-bottom: 0.5rem; height: 3.5rem; display: flex; flex-direction: column; justify-content: center; font-weight: 600; line-height: 1.3; overflow: hidden; }
         .dark .bio-text { color: #94a3b8; }
         @media (min-width: 640px) { .bio-text { font-size: 0.75rem; height: 3.5rem; margin-bottom: 0.75rem; } }
-
-        .nav-btn {
-            padding: 0.5rem 0.4rem; border-radius: 0.6rem; font-size: 0.65rem; font-weight: 700;
-            color: #4b5563; transition: all 0.2s ease-in-out; cursor: pointer;
-        }
+        .nav-btn { padding: 0.5rem 0.4rem; border-radius: 0.6rem; font-size: 0.65rem; font-weight: 700; color: #4b5563; transition: all 0.2s ease-in-out; cursor: pointer; }
         .dark .nav-btn { color: #94a3b8; }
         @media (min-width: 768px) { .nav-btn { font-size: 0.875rem; padding: 0.5rem 1.25rem; } }
         .nav-btn:hover:not(:disabled) { background-color: #fff7ed; color: #FF6600; }
@@ -230,117 +103,30 @@
         .nav-btn.active { background-color: #FF6600; color: white; }
         .dark .nav-btn.active { background-color: #FF6600; color: white; }
         .nav-btn:disabled { color: #d1d5db; cursor: default; }
-
         .map-path { transition: fill 0.2s ease-out, stroke 0.2s ease-out, opacity 0.3s ease-in-out; outline: none; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-custom { animation: spin 1s linear infinite; }
-        
-        .no-photo-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #cbd5e1;
-            font-weight: 700;
-            font-size: 0.75rem;
-            gap: 8px;
-        }
+        .no-photo-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); color: #cbd5e1; font-weight: 700; font-size: 0.75rem; gap: 8px; }
         .dark .no-photo-placeholder { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #475569; }
-        .no-photo-placeholder svg {
-            width: 48px;
-            height: 48px;
-            opacity: 0.5;
-        }
-
-        #profile-modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: white; width: 100%; max-width: 400px; border-radius: 1.5rem;
-            overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            animation: modalFadeIn 0.3s ease-out; position: relative;
-        }
+        .no-photo-placeholder svg { width: 48px; height: 48px; opacity: 0.5; }
+        #profile-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); animation: modalFadeIn 0.3s ease-out; position: relative; }
         .dark .modal-content { background-color: #1e293b; color: #f1f5f9; }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         #profile-modal-overlay.active { display: flex; }
-
-        /* 모달 우상단 공유 버튼 스타일 */
-        .modal-share-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(4px);
-            padding: 6px 14px;
-            border-radius: 99px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s;
-            z-index: 20;
-            color: #FF6600;
-            font-size: 0.75rem;
-            font-weight: 800;
-            border: 1px solid rgba(255, 102, 0, 0.1);
-        }
-        .dark .modal-share-btn {
-            background-color: rgba(30, 41, 59, 0.95);
-            color: #FF6600;
-            border-color: rgba(255, 102, 0, 0.3);
-        }
-        .modal-share-btn:hover {
-            transform: translateY(-2px);
-            background-color: #fff7ed;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        .dark .modal-share-btn:hover {
-            background-color: #1e293b;
-        }
-
-        .sns-btn {
-            width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            background: #f1f3f5; color: #495057; transition: all 0.2s;
-        }
+        .modal-share-btn { position: absolute; top: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); padding: 6px 14px; border-radius: 99px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.2s; z-index: 20; color: #FF6600; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(255, 102, 0, 0.1); }
+        .dark .modal-share-btn { background-color: rgba(30, 41, 59, 0.95); color: #FF6600; border-color: rgba(255, 102, 0, 0.3); }
+        .modal-share-btn:hover { transform: translateY(-2px); background-color: #fff7ed; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .dark .modal-share-btn:hover { background-color: #1e293b; }
+        .sns-btn { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #f1f3f5; color: #495057; transition: all 0.2s; }
         .dark .sns-btn { background: #334155; color: #cbd5e1; }
         .sns-btn:hover { background: #e9ecef; transform: translateY(-2px); }
         .dark .sns-btn:hover { background: #475569; }
-        .sns-btn.fb:hover { color: #1877F2; }
-        .sns-btn.ig:hover { color: #E4405F; }
-        .sns-btn.youtube:hover { color: #FF0000; }
-        .sns-btn.blog:hover { color: #03C75A; }
-        .sns-btn.threads:hover { color: #000000; }
-        .sns-btn.site:hover { color: #FF6600; }
-
-        .region-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.4rem;
-        }
-        @media (min-width: 640px) {
-            .region-grid { grid-template-columns: repeat(6, 1fr); gap: 0.5rem; }
-        }
-        @media (min-width: 1024px) {
-            .region-grid { grid-template-columns: repeat(8, 1fr); }
-        }
-        .region-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 0.4rem 0.25rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            transition: all 0.2s;
-        }
+        .sns-btn.fb:hover { color: #1877F2; } .sns-btn.ig:hover { color: #E4405F; } .sns-btn.youtube:hover { color: #FF0000; } .sns-btn.blog:hover { color: #03C75A; } .sns-btn.threads:hover { color: #000000; } .sns-btn.site:hover { color: #FF6600; }
+        .region-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+        @media (min-width: 640px) { .region-grid { grid-template-columns: repeat(6, 1fr); gap: 0.5rem; } }
+        @media (min-width: 1024px) { .region-grid { grid-template-columns: repeat(8, 1fr); } }
+        .region-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.4rem 0.25rem; border-radius: 0.75rem; text-align: center; transition: all 0.2s; }
         .dark .region-box { background: rgba(30, 41, 59, 0.5); border-color: rgba(255, 255, 255, 0.05); }
         .region-box:hover { background: rgba(255, 255, 255, 1); border-color: #FF6600; }
         .dark .region-box:hover { background: rgba(51, 65, 85, 1); border-color: #FF6600; }
@@ -350,73 +136,21 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 20px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
-        
-        /* 지도용 스타일 */
         .cursor-grab { cursor: grab; }
         .cursor-grabbing { cursor: grabbing; }
-
-        .collapsible-container {
-            transition: all 0.5s ease-in-out;
-            overflow: hidden;
-        }
-
-        .dark-mode-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-size: 12px;
-            font-weight: 800;
-            transition: all 0.2s;
-            background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-        .dark .dark-mode-toggle {
-            background-color: #1e293b;
-            color: #f1f5f9;
-            border-color: #334155;
-        }
-
-        .share-btn-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: #f3f4f6;
-            color: #4b5563;
-            transition: all 0.2s;
-            border: 1px solid #e5e7eb;
-        }
-        .dark .share-btn-item {
-            background-color: #1e293b;
-            color: #cbd5e1;
-            border-color: #334155;
-        }
-        .share-btn-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+        .collapsible-container { transition: all 0.5s ease-in-out; overflow: hidden; }
+        .dark-mode-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; transition: all 0.2s; background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .dark .dark-mode-toggle { background-color: #1e293b; color: #f1f5f9; border-color: #334155; }
+        .share-btn-item { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background-color: #f3f4f6; color: #4b5563; transition: all 0.2s; border: 1px solid #e5e7eb; }
+        .dark .share-btn-item { background-color: #1e293b; color: #cbd5e1; border-color: #334155; }
+        .share-btn-item:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
         .share-btn-item.facebook:hover { background-color: #1877F2; color: white; border-color: #1877F2; }
         .share-btn-item.x:hover { background-color: #000000; color: white; border-color: #000000; }
         .dark .share-btn-item.x:hover { background-color: #fff; color: black; border-color: #fff; }
         .share-btn-item.link:hover { background-color: #FF6600; color: white; border-color: #FF6600; }
-
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .share-fallback-animate {
-            animation: fadeInScale 0.2s ease-out forwards;
-        }
-
-        /* PWA 설치 버튼 추가 스타일 */
-        #pwa-install-btn {
-            display: none; /* 기본 숨김 */
-        }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .share-fallback-animate { animation: fadeInScale 0.2s ease-out forwards; }
+        #pwa-install-btn { display: none; }
     </style>
 </head>
 <body id="top" class="p-0 overflow-hidden">
@@ -1040,7 +774,7 @@
             { name: "오상균", region: "서울 성동구", metropolitan: "서울특별시", category: "기초의원", office: "성동구의원", status: "후보", subRegion: "마장동, 사근동, 송정동,용답동", bio: ["성동구 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-01-26" },
             { name: "박범근", region: "서울 관악구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "신사동, 조원동, 미성동", bio: ["관악구 마선거구 후보"], photo: "", district: "마", sns: { fb: "#" }, decl: "#", dateAdded: "2026-01-26" },
             { name: "원동철", region: "서울 관악구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "삼성동, 대학동", bio: ["배우", "오오더블유 대표"], photo: "", district: "아", sns: { fb: "#" }, ig: "https://www.instagram.com/_oneofwon", decl: "#", dateAdded: "2026-01-26" },
-            { name: "김주연", region: "서울 광진구", metropolitan: "서울특별시", category: "기초의원", office: "광진구의원", status: "후보", subRegion: "자양제1동, 자양제2동, 구의제1동, 구의제3동", bio: ["광진구 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-01-26" },
+            { name: "김주연", region: "서울 광진구", metropolitan: "서울특별시", category: "기초의원", office: "광진구의원", status: "후보", subRegion: "자양제1동, 자양제2동, 구의제1동, 구의제3동", bio: ["<span style='letter-spacing:-0.15em;'>개혁신당 광진구 지역발전특위 부위원장</span>", "21대 대선 서울시 선대위 환경위 위원", "21대 대선 조직본부 강남캠프 자원봉사단원", "전) 한국어, 중국어 강사"], photo: "https://i.imgur.com/0cMZalE.jpeg", district: "다", sns: { fb: "https://www.facebook.com/leadingkim6" }, decl: "https://rallypoint.kr/best/225947", dateAdded: "2026-01-26" },
             { name: "이진현", region: "서울 광진구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "화양동, 자양제3동, 자양제4동", bio: ["광진구 라선거구 후보"], photo: "", district: "라", sns: { fb: "https://www.facebook.com/profile.php?id=100004762395806", yt: "https://www.youtube.com/@different-politics" }, decl: "#", dateAdded: "2026-01-26" },
             { name: "우영훈", region: "대구 달성군", metropolitan: "대구광역시", category: "기초의원", office: "달성군의원", status: "후보", subRegion: "화원읍, 가창면", bio: ["<span style='letter-spacing:-0.15em;'>개혁신당 지역발전특위 부위원장</span>", "국제라이온스협회 특별위원장", "국제라이온스협회 분과위원장", "국제라이온스협회 영진L 14대 회장"], photo: "https://i.imgur.com/amHTRAa.jpeg", district: "가", sns: { fb: "https://www.facebook.com/wooyounghoon", ig: "https://www.instagram.com/wooyounghoon" }, decl: "https://www.facebook.com/share/p/17tdaEkjL5/", dateAdded: "2026-01-26" },
             { name: "우성원", region: "대구 달성군", metropolitan: "대구광역시", category: "기초의원", office: "달성군의원", status: "후보", subRegion: "유가읍,현풍읍, 구지면", bio: ["달성군 당협위원장"], photo: "https://i.imgur.com/NNtiJ53.jpeg", district: "다", sns: { fb: "https://www.facebook.com/seongwon.woo.3/" }, decl: "https://www.facebook.com/share/p/1D9hTEiQjh/", dateAdded: "2026-01-26" },
@@ -1070,8 +804,8 @@
             { name: "성진영", region: "대구 중구", metropolitan: "대구광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "동인동, 삼덕동, 성내1동, 남산1동, 대봉1동, 대봉2동", bio: ["대구시당 미래희망위원회 위원", "캠퍼스지부 경북대학교 지부장"], photo: "https://i.imgur.com/fHwNOji.png", district: "가", sns: { ig: "https://www.instagram.com/jyseong_gyeongsan/" }, decl: "https://rallypoint.kr/board/politics-free/222667", dateAdded: "2026-02-12" },
             { name: "윤서진", region: "대전 유성구", metropolitan: "대전광역시", category: "기초의원", office: "기초의원 후보", subRegion: "온천1동, 온천2동, 노은1동", bio: ["중앙당 미래희망위원회 위원", "대전시당 부위원장", "제35대 KAIST 총학생회장"], photo: "https://i.imgur.com/N24OK0K.jpeg", district: "나", sns: { ig: "https://www.instagram.com/seojin_ys/" }, decl: "https://www.youtube.com/watch?v=YBVriZc5RQc", dateAdded: "2026-01-17" },
             { name: "최진형", region: "경기 안산시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "본오3동, 사동, 사이동, 해양동", bio: ["안산시 가선거구 후보"], photo: "https://i.imgur.com/nihgF8a.png", district: "가", sns: { ig: "https://www.instagram.com/jhchoi_ansan4/" }, decl: "https://rallypoint.kr/board/politics-free/223063", dateAdded: "2026-01-26" },
-            { name: "이강민", region: "충남 천안시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "불당1동, 불당2동", bio: ["개혁신당 지역발전특위 부위원장", "대전시당 자문위원", "21대 대선 충남 선대본부 위원", "충남개혁정책네트워크 대표"], photo: "https://i.imgur.com/rpUTBbK.png", district: "라", cardFit: "cover", cardPos: "center 15%", sns: { fb: "https://www.facebook.com/leangmin4473", blog: "https://blog.naver.com/buldang_leekangmin", yt: "https://www.youtube.com/channel/UCUC5ttFtQfNRCqANIffAalg" }, decl: "https://rallypoint.kr/board/politics-free/223549", dateAdded: "2025-12-01" },
-            { name: "고재윤", region: "충남 당진시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "고대면, 석문면, 당진1동, 당진3동", bio: ["대전시당 정책위원", "대전시당 자문위원", "21대 대선 충남 선대본부 위원", "자원봉사단체 청춘 대표"], photo: "https://i.imgur.com/sJf2zpM.jpeg", district: "라", sns: { fb: "https://www.facebook.com/profile.php?id=1000075309062913", ig: "https://www.instagram.com/yn._.jae/", blog: "https://m.blog.naver.com/kojy9402?tab=1", site: "https://litt.ly/gojaeyun" }, decl: "https://www.instagram.com/reel/DUaehbcAUci/?igsh=M2Y5aWdreGsxM2Zi", dateAdded: "2026-02-05" },
+            { name: "이강민", region: "충남 천안시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "불당1동, 불당2동", bio: ["개혁신당 지역발전특위 부위원장", "대전시당 자문위원", "21대 대선 충남 선대본부 위원", "충남개혁정책네트워크 대표"], photo: "https://i.imgur.com/rpUTBbK.png", district: "라", cardFit: "cover", cardPos: "center 15%", sns: { fb: "https://www.facebook.com/leekangmin4473", blog: "https://blog.naver.com/buldang_leekangmin", yt: "https://www.youtube.com/channel/UCUC5ttFtQfNRCqANIffAalg" }, decl: "https://rallypoint.kr/board/politics-free/223549", dateAdded: "2025-12-01" },
+            { name: "고재윤", region: "충남 당진시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "고대면, 석문면, 당진1동, 당진3동", bio: ["대전시당 정책위원", "대전시당 자문위원", "21대 대선 충남 선대본부 위원", "자원봉사단체 청춘 대표"], photo: "https://i.imgur.com/sJf2zpM.jpeg", district: "라", sns: { fb: "https://www.facebook.com/profile.php?id=100075309062913", ig: "https://www.instagram.com/yn._.jae/", blog: "https://m.blog.naver.com/kojy9402?tab=1", site: "https://litt.ly/gojaeyun" }, decl: "https://www.instagram.com/reel/DUaehbcAUci/?igsh=M2Y5aWdreGsxM2Zi", dateAdded: "2026-02-05" },
             { name: "황시현", region: "충남 천안시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", subRegion: "부성2동", bio: ["21대 대선 충남 선대본 홍보위원", "충남개혁정책네트워크 조직국장", "청년 커뮤니티 '청연' 대표"], photo: "https://i.imgur.com/3yWK8BF.png", district: "사", sns: { fb: "#" }, decl: "https://rallypoint.kr/board/politics-free/223942", dateAdded: "2026-01-15" },
             { name: "김동현", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", district: "자", subRegion: "삼성1동, 삼성2동, 대치2동", bio: ["건국대학교 캠퍼스 지부원"], photo: "https://i.imgur.com/uzVK2Vj.jpeg", sns: { blog: "https://m.blog.naver.com/PostList.naver?blogId=uada5633" }, decl: "https://m.blog.naver.com/PostView.naver?blogId=uada5633&logNo=224121263655", focus: "photo-face-focus", dateAdded: "2025-12-01" },
             { name: "이천은", region: "경기 안양시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", district: "바", subRegion: "달안동, 부림동, 인덕원동, 관양동", bio: ["현) 케이디랩 마케팅 총괄", "전) 럭스로보 해외영업 책임"], photo: "https://i.imgur.com/FJsBrQ1.png", sns: { ig: "https://www.instagram.com/pyeongchonman?igsh=ZWY1dzBvZm1oYWVy" }, decl: "https://www.instagram.com/p/DT9qrWckb3S/?igsh=MWtjcGlzOHk4MncxNg%3D%3D", dateAdded: "2025-12-01" },
@@ -1083,349 +817,10 @@
             { name: "손승범", region: "충남 천안시", metropolitan: "충청남도", category: "기초의원", office: "기초의원 후보", status: "출마선언", subRegion: "봉명동, 성정1동, 성정2동, 문성동", bio: ["전) 충남도당 대학생 대변인"], photo: "https://i.imgur.com/tgnxWFB.png", district: "다", sns: { ig: "https://www.instagram.com/sonseungbeom2004/" }, decl: "https://rallypoint.kr/board/politics-free/225934", dateAdded: "2026-02-15" }
         ];
 
-        /* 유틸리티 함수 */
-        function isNewCandidate(dateStr) {
-            if (!dateStr) return false;
-            const addedDate = new Date(dateStr);
-            const now = new Date();
-            now.setHours(0,0,0,0);
-            addedDate.setHours(0,0,0,0);
-            const diffTime = now - addedDate;
-            const diffDays = diffTime / (1000 * 60 * 60 * 24);
-            return diffDays >= 0 && diffDays <= 7;
-        }
-
-        function getCleanOffice(c) {
-            let baseOffice = c.office || "";
-            if (c.category === "광역의원") {
-                const metro = c.metropolitan || "";
-                if (metro.endsWith("특별시") || metro.endsWith("광역시")) {
-                    baseOffice = metro.replace(/(특별시|광역시)$/, "") + "시의회";
-                } else if (metro.endsWith("특별자치시")) {
-                    baseOffice = "세종시의회";
-                } else if (metro.endsWith("도") || metro.endsWith("특별자치도")) {
-                    baseOffice = metro.replace(/(특별자치도|도)$/, "") + "도의회";
-                }
-                return baseOffice;
-            }
-            if (c.category === "기초의원") {
-                const parts = c.region.split(' ');
-                const cityOrGu = parts[parts.length - 1];
-                baseOffice = cityOrGu + "의회"; 
-            }
-            if (c.name === "김순주") {
-                baseOffice = "세종시의원";
-            }
-            return baseOffice.replace(/\s*후보\s*$/, ""); 
-        }
-
-        const councilSort = (a, b) => (a.region || "").localeCompare(b.region || "") || (a.district || "").localeCompare(b.district || "");
-
-        function updateSummary() {
-            const getCount = (cat) => candidates.filter(c => c.category === cat).length;
-            const els = { 'sum-by': getCount("재보궐선거"), 'sum-prov-exec': getCount("광역단체장"), 'sum-local-exec': getCount("기초단체장"), 'sum-prov-council': getCount("광역의원"), 'sum-local-council': getCount("기초의원"), 'sum-total': candidates.length };
-            for (let id in els) { const el = document.getElementById(id); if (el) el.innerText = els[id]; }
-            const regionGrid = document.getElementById('region-status-grid');
-            if (regionGrid) {
-                const shortNameMap = { "서울특별시": "서울", "부산광역시": "부산", "대구광역시": "대구", "인천광역시": "인천", "광주광역시": "광주", "대전광역시": "대전", "울산광역시": "울산", "세종특별자치시": "세종", "경기도": "경기", "강원특별자치도": "강원", "충청북도": "충북", "충청남도": "충남", "전북특별자치도": "전북", "전라남도": "전남", "경상북도": "경북", "경상남도": "경남", "제주특별자치도": "제주" };
-                let gridHtml = '';
-                Object.keys(regionPriority).forEach(region => {
-                    const count = candidates.filter(c => c.metropolitan === region || c.region === region).length;
-                    gridHtml += `<div class="region-box cursor-pointer" onclick="renderRegionView('${region}')"><p class="text-gray-500 text-[10px] font-bold">${shortNameMap[region]}</p><p class="text-lg font-black ${count > 0 ? 'text-[#FF6600]' : 'text-gray-700 dark:text-slate-400'}">${count}</p></div>`;
-                });
-                regionGrid.innerHTML = gridHtml;
-            }
-        }
-
-        function updateNavActive(id) { 
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
-            const target = document.getElementById(id); 
-            if(target) target.classList.add('active'); 
-        }
-
-        function scrollToId(id) { 
-            const isRegionMode = document.getElementById('btn-region').classList.contains('active'); 
-            if (id === 'top') { 
-                if (isRegionMode) renderOriginalView(); 
-                window.scrollTo({ top: 0, behavior: 'smooth' }); 
-                return; 
-            } 
-            if (isRegionMode) { 
-                renderOriginalView(); 
-                setTimeout(() => { 
-                    const el = document.getElementById(id); 
-                    if (el) el.scrollIntoView({ behavior: 'smooth' }); 
-                }, 150); 
-            } else { 
-                const el = document.getElementById(id); 
-                if (el) el.scrollIntoView({ behavior: 'smooth' }); 
-            } 
-        }
-
-        function openProfileModal(name) {
-            const c = candidates.find(cand => cand.name === name);
-            if (!c) return;
-            document.getElementById('modal-name').innerText = c.name;
-            currentModalCandidateName = c.name;
-            
-            const isConfirmed = (c.status === "후보" && c.name !== "김성민" && c.name !== "이수찬" && c.name !== "박종길");
-            let statusLabel = isConfirmed ? "후보" : (c.name === "송진영" ? "출마예정" : ((c.decl && c.decl !== "#") ? "출마선언" : "출마예정"));
-            
-            let displayOfficeLabel = "";
-            if (c.name === "서운교") displayOfficeLabel = "대구광역시의회 수성구 제3선거구 후보";
-            else if (c.name === "양해두") displayOfficeLabel = "제주특별자치도의회 제주시 외도동·이호동·도두동 선거구 후보";
-            else if (c.name === "이건우") displayOfficeLabel = "제주특별자치도의회 제주시 노형동 선거구 후보";
-            else if (c.name === "최현석") displayOfficeLabel = "서울특별시의회 송파구 제2 선거구 후보";
-            else if (c.name === "이재원") displayOfficeLabel = "서울특별시의회 비례대표 출마예정";
-            else if (c.name === "강인수") displayOfficeLabel = "서울특별시의회 강남구 제1 선거구 후보";
-            else if (c.name === "김순주") displayOfficeLabel = "세종특별자치시의회 제4 선거구 후보";
-            else {
-                let districtLabel = c.district ? ` ${c.district}선거구` : "";
-                const displayOffice = getCleanOffice(c);
-                displayOfficeLabel = `${displayOffice}${districtLabel} ${statusLabel}`;
-            }
-
-            document.getElementById('modal-office').innerText = displayOfficeLabel;
-            
-            const subRegionEl = document.getElementById('modal-subregion');
-            subRegionEl.innerText = c.subRegion || "";
-            document.getElementById('modal-photo-area').innerHTML = c.photo ? `<img src="${c.photo}" class="w-full h-full object-contain" style="object-position: center top" alt="개혁신당 ${c.name} 후보 프로필">` : `<div class="no-photo-placeholder"><i data-lucide="user-round" class="w-12 h-12"></i><span>이미지 준비중</span></div>`;
-            
-            const snsBtns = { 
-                fb: document.getElementById('modal-fb'), 
-                ig: document.getElementById('modal-ig'), 
-                threads: document.getElementById('modal-threads'), 
-                yt: document.getElementById('modal-yt'), 
-                blog: document.getElementById('modal-blog'),
-                site: document.getElementById('modal-site')
-            };
-            for (let k in snsBtns) { 
-                if (c.sns && c.sns[k] && c.sns[k] !== "#") { 
-                    snsBtns[k].style.display = 'flex'; 
-                    snsBtns[k].href = c.sns[k]; 
-                } else { 
-                    snsBtns[k].style.display = 'none'; 
-                } 
-            }
-            
-            const declBtn = document.getElementById('modal-declaration');
-            if (c.decl && c.decl !== "#") {
-                declBtn.style.display = 'block';
-                declBtn.href = c.decl;
-            } else {
-                declBtn.style.display = 'none';
-            }
-
-            // SEO 업데이트 호출
-            const description = c.bio ? c.bio[0].replace(/<[^>]*>?/gm, '') : "";
-            updateMetadata(c.name, displayOfficeLabel, description);
-
-            const overlay = document.getElementById('profile-modal-overlay'); 
-            overlay.style.display = 'flex'; 
-            setTimeout(() => overlay.classList.add('active'), 10);
-            lucide.createIcons();
-        }
-
-        function closeProfileModal() { 
-            const overlay = document.getElementById('profile-modal-overlay'); 
-            overlay.classList.remove('active'); 
-            setTimeout(() => { 
-                overlay.style.display = 'none'; 
-                document.body.style.overflow = ''; 
-                currentModalCandidateName = '';
-                // SEO 초기화
-                updateMetadata(null);
-            }, 300); 
-        }
-
-        function renderOriginalView() {
-            updateNavActive('btn-original');
-            const container = document.getElementById('content-area');
-            const provCouncilCands = candidates.filter(c => c.category === "광역의원").sort((a, b) => {
-                const priA = regionPriority[a.metropolitan] || 99;
-                const priB = regionPriority[b.metropolitan] || 99;
-                if (priA !== priB) return priA - priB;
-                const isProA = a.constituency === "비례";
-                const isProB = b.constituency === "비례";
-                if (isProA && !isProB) return 1;  
-                if (!isProA && isProB) return -1; 
-                return (a.district || a.constituencyFull || "").localeCompare(b.district || b.constituencyFull || "");
-            });
-            const filterByMetro = (metro) => candidates.filter(c => c.category === "기초의원" && c.metropolitan === metro).sort(councilSort);
-            const seoulCands = filterByMetro("서울특별시");
-            const daeguCands = filterByMetro("대구광역시");
-            const incheonCands = filterByMetro("인천광역시");
-            const daejeonCands = filterByMetro("대전광역시");
-            const gyeonggiCands = filterByMetro("경기도");
-            const chungnamCands = filterByMetro("충청남도");
-            const gyeongbukCands = filterByMetro("경상북도");
-            const excluded = ["서울특별시", "대구광역시", "대전광역시", "인천광역시", "경기도", "경상북도", "충청남도"];
-            const otherCands = candidates.filter(c => !excluded.includes(c.metropolitan) && c.category === "기초의원").sort((a, b) => (regionPriority[a.metropolitan] || 99) - (regionPriority[b.metropolitan] || 99) || councilSort(a, b));
-
-            container.innerHTML = `
-                <section id="provincial-exec" class="scroll-mt-24"><h2 class="section-title">광역자치단체장</h2><div class="grid-responsive">${candidates.filter(c => c.category === "광역단체장").map(createCard).join('')}</div></section>
-                <section id="local-exec" class="scroll-mt-24">
-                    <h2 class="section-title">기초자치단체장</h2>
-                    <div class="grid-responsive">
-                        ${candidates.filter(c => c.category === "기초단체장")
-                            .sort((a, b) => (regionPriority[a.metropolitan] || 99) - (regionPriority[b.metropolitan] || 99) || (a.region || "").localeCompare(b.region || ""))
-                            .map(createCard).join('')}
-                    </div>
-                </section>
-                <section id="provincial-council" class="scroll-mt-24"><h2 class="section-title">광역의회의원</h2><div class="grid-responsive">${provCouncilCands.map(createCard).join('')}</div></section>
-                <section id="local-council" class="mb-16 scroll-mt-24">
-                    <h2 class="section-title">기초의회의원</h2>
-                    ${seoulCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">서울특별시</h3><div class="grid-responsive">${seoulCands.map(createCard).join('')}</div></div>` : ''}
-                    ${daeguCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대구광역시</h3><div class="grid-responsive">${daeguCands.map(createCard).join('')}</div></div>` : ''}
-                    ${incheonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">인천광역시</h3><div class="grid-responsive">${incheonCands.map(createCard).join('')}</div></div>` : ''}
-                    ${daejeonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대전광역시</h3><div class="grid-responsive">${daejeonCands.map(createCard).join('')}</div></div>` : ''}
-                    ${gyeonggiCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">경기도</h3><div class="grid-responsive">${gyeonggiCands.map(createCard).join('')}</div></div>` : ''}
-                    ${chungnamCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">충청남도</h3><div class="grid-responsive">${chungnamCands.map(createCard).join('')}</div></div>` : ''}
-                    ${gyeongbukCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">경상북도</h3><div class="grid-responsive">${gyeongbukCands.map(createCard).join('')}</div></div>` : ''}
-                    ${otherCands.length > 0 ? `<div><h3 class="sub-section-title">기타 지역</h3><div class="grid-responsive">${otherCands.map(createCard).join('')}</div></div>` : ''}
-                </section>
-            `;
-            updateSummary(); 
-            lucide.createIcons();
-        }
-
-        function renderRegionView(targetRegion = null) {
-            updateNavActive('btn-region');
-            const container = document.getElementById('content-area');
-            let html = '<div class="mb-16">';
-            Object.keys(regionPriority).forEach(m => {
-                const regionalCandidates = candidates.filter(c => c.metropolitan === m || c.region === m).sort((a, b) => {
-                    const catOrder = {"광역단체장": 1, "기초단체장": 2, "광역의원": 3, "기초의원": 4};
-                    const catDiff = (catOrder[a.category] || 5) - (catOrder[b.category] || 5);
-                    if (catDiff !== 0) return catDiff;
-
-                    if (a.category === "광역의원" || a.category === "기초의원") {
-                        const isAPro = a.constituency === "비례" || a.district === "비례";
-                        const isBPro = b.constituency === "비례" || b.district === "비례";
-                        if (isAPro !== isBPro) return isAPro ? 1 : -1;
-                        
-                        const nameA = (a.region || "") + (a.district || a.constituencyFull || "");
-                        const nameB = (b.region || "") + (b.district || b.constituencyFull || "");
-                        return nameA.localeCompare(nameB, 'ko');
-                    }
-                    return (a.name || "").localeCompare(b.name || "", 'ko');
-                });
-                if(regionalCandidates.length > 0) {
-                    html += `<section id="region-${m}" class="mb-12 scroll-mt-24"><h2 class="section-title">${m}</h2><div class="grid-responsive">${regionalCandidates.map(createCard).join('')}</div></section>`;
-                }
-            });
-            container.innerHTML = html + '</div>';
-            lucide.createIcons();
-            if (targetRegion) { 
-                const el = document.getElementById(`region-${targetRegion}`); 
-                if (el) el.scrollIntoView({ behavior: 'smooth' }); 
-            }
-            else { 
-                const seoulEl = document.getElementById('region-서울특별시'); 
-                if (seoulEl) seoulEl.scrollIntoView({ behavior: 'smooth' }); 
-            }
-        }
-
-        window.onload = function() {
-            initDarkMode();
-            const diff = Math.ceil((new Date('2026-06-03') - new Date().setHours(0,0,0,0)) / (1000*60*60*24));
-            const badge = document.getElementById('d-day-badge');
-            if (badge) badge.innerText = diff > 0 ? `D-${diff}` : (diff === 0 ? 'D-Day' : `D+${Math.abs(diff)}`);
-            
-            const expiryDate = new Date('2026-02-22'); 
-            const today = new Date();
-            if (today >= expiryDate) {
-                const sBadge = document.getElementById('seoul-map-new-badge');
-                const gBadge = document.getElementById('gyeonggi-map-new-badge');
-                if (sBadge) sBadge.style.display = 'none';
-                if (gBadge) gBadge.style.display = 'none';
-            }
-
-            const params = new URLSearchParams(window.location.search);
-            const candidateName = params.get('candidate');
-            if (candidateName) {
-                const target = candidates.find(c => c.name === candidateName);
-                if (target) {
-                    openProfileModal(candidateName);
-                }
-            }
-            
-            renderOriginalView();
-        };
-
-        function createCard(c) {
-            const isTightBio = ["김태수", "고재윤", "이강민", "오정대", "우영훈", "최윤석", "구성도", "박성진", "주한송", "최제일", "심용진", "박종길", "하대식", "송원근", "이호엽", "하용준", "김영민", "손승범"].includes(c.name);
-            const isTightSpacing = ["우영훈", "김태수", "심용진"].includes(c.name);
-            let styles = [];
-            if (isTightBio || ["하대식", "조동운", "박철현", "김성민", "류태하", "이용우", "이재원", "김병진", "양성혁", "양준모"].includes(c.name)) {
-                styles.push("line-height: 1.05");
-            }
-            if (isTightSpacing) { styles.push("letter-spacing: -0.08em"); }
-            if (c.name === "심용진") { styles.push("align-items: flex-start; text-align: left;"); }
-            
-            const bioStyleAttr = styles.length > 0 ? `style="${styles.join('; ')};"` : "";
-
-            let bioHtml = c.bio.map((line, idx) => `<div class="flex items-center justify-center">${line}</div>`).join('');
-            let leftTagText = c.region;
-            if (c.category === "기초의원") {
-                const isMetropolitan = c.metropolitan && (c.metropolitan.endsWith('특별시') || c.metropolitan.endsWith('광역시') || c.metropolitan.endsWith('특별자치시'));
-                if (isMetropolitan) { 
-                    leftTagText = c.region;
-                    if(c.name === "김성조" || c.name === "이동현") leftTagText = "경북 " + c.region.replace("경상북도 ", "");
-                } 
-                else { leftTagText = c.region.replace("경기도", "경기").replace("충청남도", "충남").replace("경상북도", "경북").replace("전라북도", "전북").replace("충청북도", "충북").replace("경상남도", "경남").replace("전라남도", "전남").replace("강원특별자치도", "강원").replace("제주특별자치도", "제주"); }
-            } else if (c.category === "광역의원") {
-                leftTagText = (c.shortMetro || c.region);
-            }
-            let rightTagText = c.district || (c.constituency === "비례" ? "비례" : "");
-            let districtTag = rightTagText ? `<div class="district-tag dark:bg-slate-900 dark:text-orange-50 dark:border-orange-500">${rightTagText}</div>` : "";
-            const isNoPhoto = !c.photo || c.photo.trim() === "";
-            const fit = c.cardFit || "cover";
-            const pos = c.cardPos || "center top"; 
-            const scale = c.cardScale || "1";
-            const photoContent = isNoPhoto 
-                ? `<div class="no-photo-placeholder"><i data-lucide="user-round" class="w-12 h-12"></i><span>이미지 준비중</span></div>`
-                : `<img src="${c.photo}" class="candidate-photo ${!c.cardFit ? 'photo-face-focus' : ''}" style="object-fit: ${fit} !important; object-position: ${pos} !important; transform: scale(${scale});" alt="개혁신당 ${c.name} 후보 프로필">`;
-            
-            const hasNewBadge = isNewCandidate(c.dateAdded);
-            const newBadgeHtml = hasNewBadge ? `<span class="new-badge">NEW</span>` : "";
-            
-            const displayOffice = getCleanOffice(c);
-            
-            const isConfirmed = (c.status === "후보" && c.name !== "김성민" && c.name !== "이수찬" && c.name !== "박종길");
-            const confirmedBadge = isConfirmed ? `<div class="confirmed-badge"><i data-lucide="check-circle" style="width: 10px; height: 10px;"></i>공천 확정</div>` : "";
-
-            let statusLabel = "";
-            if (isConfirmed) statusLabel = "후보";
-            else if (c.name === "송진영") statusLabel = "출마예정";
-            else statusLabel = (c.decl && c.decl !== "#") ? "출마선언" : "출마예정";
-
-            return `
-                <div onclick="openProfileModal('${c.name}')" class="bg-white dark:bg-slate-800 rounded-[1rem] md:rounded-[1.5rem] shadow-md border border-gray-100 dark:border-slate-700 card-hover transition-all duration-500 overflow-hidden flex flex-col h-full cursor-pointer">
-                    <div class="photo-frame">
-                        <div class="region-tag">${leftTagText}</div>
-                        ${districtTag}
-                        ${confirmedBadge}
-                        ${photoContent}
-                    </div>
-                    <div class="pt-2 px-3 pb-4 md:pt-4 md:px-6 md:pb-6 text-center flex flex-col flex-grow">
-                        <h3 class="text-base md:text-xl font-bold mb-1 dark:text-white tracking-wider flex items-center justify-center">${c.name}${newBadgeHtml}</h3>
-                        <div class="bio-text" ${bioStyleAttr}>${bioHtml}</div>
-                        <div class="mt-auto nrp-bg-orange text-white py-2 rounded-xl font-bold text-[10px] md:text-sm leading-tight text-center">${displayOffice} ${statusLabel}</div>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
-
-    <script src="data.js"></script>
-
-    <script type="text/babel">
+        /* [리액트] 대시보드 스크립트 */
         const { useState, useEffect, useRef, useMemo } = React;
-
-        // 전역 변수에서 데이터를 가져옵니다.
-        const SEOUL_INITIAL_DISTRICTS = window.SEOUL_INITIAL_DISTRICTS;
-        const GYEONGGI_INITIAL_DISTRICTS = window.GYEONGGI_INITIAL_DISTRICTS;
+        const SEOUL_INITIAL_DISTRICTS = window.SEOUL_INITIAL_DISTRICTS || {};
+        const GYEONGGI_INITIAL_DISTRICTS = window.GYEONGGI_INITIAL_DISTRICTS || {};
 
         const EMPTY_GRAY_PALETTE = ["#cbd5e1", "#b1b9c6", "#94a3b8", "#a8b2c1", "#bdc6d4"];
         const EMPTY_GRAY_PALETTE_DARK = ["#1e293b", "#334155", "#0f172a", "#111827", "#1e1b4b"];
@@ -1439,14 +834,12 @@
 
         const IntegratedProfile = ({ can }) => {
             const isValidLink = (link) => link && link !== "" && link !== "#";
-            
             const getStatusLabel = (c) => {
                 const isConfirmed = (c.status === "후보" && c.name !== "김성민" && c.name !== "이수찬" && c.name !== "박종길");
                 if (isConfirmed) return "후보";
                 if (c.name === "송진영") return "출마예정";
                 return (c.decl && c.decl !== "#") ? "출마선언" : "출마예정";
             };
-
             let displayOfficeLabel = "";
             if (can.name === "서운교") displayOfficeLabel = "대구광역시의회 수성구 제3선거구 후보";
             else if (can.name === "양해두") displayOfficeLabel = "제주특별자치도의회 제주시 외도동·이호동·도두동 선거구 후보";
@@ -1554,10 +947,10 @@
                 if (!selectedDistrictInfo || !selectedDistrictInfo.district) return [];
                 const guName = selectedDistrictInfo.gu;
                 const distIdPart = selectedDistrictInfo.district.split(' ')[1]?.replace('선거구', '') || "";
-                return candidates.filter(can => 
-                    can.category === "기초의원" && 
-                    can.metropolitan === "서울특별시" && 
-                    can.region.includes(guName) && 
+                return candidates.filter(can => 
+                    can.category === "기초의원" && 
+                    can.metropolitan === "서울특별시" && 
+                    can.region.includes(guName) && 
                     can.district === distIdPart
                 );
             }, [selectedDistrictInfo]);
@@ -1575,9 +968,9 @@
             useEffect(() => {
                 const dongPromise = fetch("https://raw.githubusercontent.com/vuski/admdongkor/master/ver20250401/HangJeongDong_ver20250401.geojson")
                     .then(res => res.json())
-                    .then(data => { 
+                    .then(data => { 
                         const seoulFeatures = data.features.filter(f => f.properties.adm_cd && f.properties.adm_cd.startsWith('11'));
-                        setGeoData({ ...data, features: seoulFeatures }); 
+                        setGeoData({ ...data, features: seoulFeatures }); 
                     });
 
                 const guPromise = fetch("https://raw.githubusercontent.com/southkorea/seoul-maps/master/juso/2015/json/seoul_municipalities_geo_simple.json")
@@ -1622,23 +1015,23 @@
                                     const dongName = parts[2] || "";
                                     const distName = findDistrictName(guName, dongName);
                                     const isSelected = selectedDistrictInfo && selectedDistrictInfo.district === distName;
-                                    const hasCandidateInDist = distName && candidates.some(c => 
-                                        c.category === "기초의원" && 
-                                        c.metropolitan === "서울특별시" && 
-                                        c.region.includes(guName) && 
+                                    const hasCandidateInDist = distName && candidates.some(c => 
+                                        c.category === "기초의원" && 
+                                        c.metropolitan === "서울특별시" && 
+                                        c.region.includes(guName) && 
                                         (distName.includes(c.district) || c.district === distName.split(' ')[1].replace('선거구', ''))
                                     );
                                     let fillStyle = isSelected ? "#FF6600" : (hasCandidateInDist ? getOrangeColor(distName) : getGreyColor(distName));
                                     const isDimmed = selectedDistrictInfo && !isSelected;
 
-                                    return <path 
-                                        key={i} 
-                                        d={generatePath(f)} 
-                                        fill={fillStyle} 
-                                        stroke={isSelected ? "#fff" : (document.documentElement.classList.contains('dark') ? "#0f172a" : "#cbd5e1")} 
-                                        strokeWidth={isSelected ? "1.5" : "0.2"} 
+                                    return <path 
+                                        key={i} 
+                                        d={generatePath(f)} 
+                                        fill={fillStyle} 
+                                        stroke={isSelected ? "#fff" : (document.documentElement.classList.contains('dark') ? "#0f172a" : "#cbd5e1")} 
+                                        strokeWidth={isSelected ? "1.5" : "0.2"} 
                                         style={{ opacity: isDimmed ? 0.2 : 1 }}
-                                        className="map-path cursor-pointer hover:fill-orange-200 dark:hover:fill-orange-800" 
+                                        className="map-path cursor-pointer hover:fill-orange-200 dark:hover:fill-orange-800" 
                                         onClick={() => {
                                             if (selectedDistrictInfo && selectedDistrictInfo.district === distName) {
                                                 setSelectedDistrictInfo(null);
@@ -1651,7 +1044,7 @@
                                     </path>;
                                 })}
                                 {guGeoData?.features.map((gf, gi) => (
-                                    <path 
+                                    <path 
                                         key={`gu-${gi}`}
                                         d={generatePath(gf)}
                                         fill="none"
@@ -1692,7 +1085,7 @@
                                     <div className="divide-y divide-gray-100 dark:divide-slate-800">
                                         {matchedCandidates.map((can, idx) => {
                                             const parts = can.region.split(' ');
-                                            const displayOffice = parts[parts.length - 1] + "의회"; 
+                                            const displayOffice = parts[parts.length - 1] + "의회"; 
                                             const isConfirmed = (can.status === "후보" && can.name !== "김성민" && can.name !== "이수찬" && can.name !== "박종길");
                                             let statusText = isConfirmed ? " 후보" : (can.name === "송진영" ? " 출마예정" : ((can.decl && can.decl !== "#") ? " 출마선언" : " 출마예정"));
                                             let fullOfficeLabel = `${displayOffice}${can.district ? ` ${can.district}선거구` : ""}${statusText}`;
@@ -1770,7 +1163,7 @@
             const [geoData, setGeoData] = useState(null);
             const [muniGeoData, setMuniGeoData] = useState(null);
             const [loading, setLoading] = useState(true);
-            const [activeDistrict, setActiveDistrict] = useState(null); 
+            const [activeDistrict, setActiveDistrict] = useState(null); 
             const [selectedDistrict, setSelectedDistrict] = useState(null);
             const [selectedCandidateIdx, setSelectedCandidateIdx] = useState(0);
             const [mapBounds, setMapBounds] = useState({ minX: 126.3, maxX: 127.8, minY: 36.8, maxY: 38.3 });
@@ -1858,10 +1251,10 @@
 
             const getDistColor = (dName) => {
                 if (!dName) return document.documentElement.classList.contains('dark') ? "#020617" : "#fcf9f6";
-                const hasCandidate = candidates.some(c => 
-                    c.category === "기초의원" && 
-                    c.metropolitan === "경기도" && 
-                    dName.startsWith(c.region.replace('경기 ', '')) && 
+                const hasCandidate = candidates.some(c => 
+                    c.category === "기초의원" && 
+                    c.metropolitan === "경기도" && 
+                    dName.startsWith(c.region.replace('경기 ', '')) && 
                     dName.includes(c.district)
                 );
                 
