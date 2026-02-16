@@ -983,10 +983,15 @@
         }
 
         /* GLOBAL DATA & UTILITY FUNCTIONS */
-        /* [중요] 외부 파일에서 데이터 로드 */
-        /* data.js 및 candidates.js에서 window 객체를 통해 가져옴 */
-        const regionPriority = window.regionPriority || {};
-        const candidates = window.candidates || [];
+        /* [중요] 외부 파일에서 데이터 로드 (안전장치 추가) */
+        const regionPriority = (window.regionPriority) ? window.regionPriority : {};
+        const candidates = (window.candidates) ? window.candidates : [];
+
+        // 데이터 로드 실패 시 알림
+        if (!window.candidates || window.candidates.length === 0) {
+            console.error("후보자 데이터를 불러오지 못했습니다. candidates.js 파일 경로와 문법을 확인해주세요.");
+            // alert("후보자 데이터 로딩 중 문제가 발생했습니다.\n새로고침 하거나 관리자에게 문의해주세요.");
+        }
 
         /* 유틸리티 함수 */
         function isNewCandidate(dateStr) {
@@ -1323,8 +1328,8 @@
         }
     </script>
 
-    <script src="data.js"></script>
     <script src="candidates.js"></script>
+    <script src="data.js"></script>
 
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
