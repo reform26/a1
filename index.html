@@ -1345,7 +1345,7 @@
                 <section id="local-council" class="mb-16 scroll-mt-24">
                     <h2 class="section-title">기초의회의원</h2>
                     ${seoulCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">서울특별시</h3><div class="grid-responsive">${seoulCands.map(createCard).join('')}</div></div>` : ''}
-                    ${busanCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">부산광역시</h3><div class="grid-responsive">${seoulCands.map(createCard).join('')}</div></div>` : ''}
+                    ${busanCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">부산광역시</h3><div class="grid-responsive">${busanCands.map(createCard).join('')}</div></div>` : ''}
                     ${daeguCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대구광역시</h3><div class="grid-responsive">${daeguCands.map(createCard).join('')}</div></div>` : ''}
                     ${incheonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">인천광역시</h3><div class="grid-responsive">${incheonCands.map(createCard).join('')}</div></div>` : ''}
                     ${daejeonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대전광역시</h3><div class="grid-responsive">${daejeonCands.map(createCard).join('')}</div></div>` : ''}
@@ -2039,6 +2039,7 @@
     </script>
 </body>
 </html>
+
 
 
 
