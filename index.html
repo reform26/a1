@@ -1116,7 +1116,7 @@
             { name: "최제일", region: "서울 광진구", metropolitan: "서울특별시", category: "기초의원", office: "광진구의원", status: "후보", subRegion: "능동, 구의2동, 광장동, 군자동", bio: ["출판사 '도서출판 문각' 대표", "<span style='letter-spacing:-0.12em;'>광진구 주민참여예산위 1분과 부위원장</span>", "<span style='letter-spacing:-0.12em;'>(사)철기이범석장군기념사업회 청년위원</span>"], photo: "https://i.imgur.com/miiK7Cq.jpeg", district: "나", sns: { fb: "#", ig: "https://www.instagram.com/bestchoi__" }, decl: "https://rallypoint.kr/board/politics-free/225625/", dateAdded: "2026-02-09" },
             { name: "조연우", region: "부산 기장군", metropolitan: "부산광역시", category: "기초의원", office: "기장군의원", status: "후보", subRegion: "정관읍, 장안읍", bio: ["기장군 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
             { name: "강신학", region: "인천 연수구", metropolitan: "인천광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "송도2동, 송도4동, 송도5동", bio: ["인천시당 부위원장", "인천시당 소상공인·전략분과위원장"], photo: "https://i.imgur.com/fd8NVNE.jpeg", district: "마", sns: { fb: "https://www.facebook.com/kangsh1" }, decl: "#", dateAdded: "2026-01-26" },
-            { name: "이성실", region: "인천 연수구", metropolitan: "인천광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "송도1동, 송도3동", bio: ["연수구의회 라선거구 후보"], photo: "", district: "라", sns: { fb: "#", ig: "https://www.instagram.com/yeonsu.lss/" }, decl: "#", dateAdded: "2026-02-05" },
+            { name: "이성실", region: "인천 연수구", metropolitan: "인천광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "송도1동, 송도3동", bio: ["연수구의회 라선거구 후보"], photo: "", district: "라", sns: { fb: "#", ig: "https://www.instagram.com/yeonsu.lss/" }, decl: "https://www.instagram.com/p/DU-ZrFOkQ8k", dateAdded: "2026-02-05" },
             { name: "강민제", region: "인천 남동구", metropolitan: "인천광역시", category: "기초의원", office: "남동구의원", status: "후보", subRegion: "구월3동, 간석1동, 간석4동", bio: ["물리치료사", "인물 사진가"], photo: "https://i.imgur.com/RXjG4uN.jpeg", district: "나", sns: { fb: "#", ig: "https://www.instagram.com/special.m.j/", blog: "https://blog.naver.com/kmj42",  }, decl: "#", dateAdded: "2026-02-09" },
             { name: "심재현", region: "경기 양주시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "은현면, 남면, 옥정1동, 옥정2동, 은현면, 회천1동, 회천2동, 회천3동", bio: ["양주시 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
             { name: "김동광", region: "경기 수원시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "매탄1동, 매탄2동, 매탄3동, 매탄4동", bio: ["수원시 아선거구 후보"], photo: "", district: "아", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
@@ -1465,10 +1465,10 @@
         };
 
         function createCard(c) {
-            const isTightBio = ["김태수", "고재윤", "이강민", "오정대", "우영훈", "최윤석", "구성도", "박성진", "주한송", "최제일", "심용진", "박종길", "하대식", "송원근", "이호엽", "하용준", "김영민", "손승범", "김주연", "주이삭" ].includes(c.name);
+            const isTightBio = ["김태수", "고재윤", "이강민", "오정대", "우영훈", "최윤석", "구성도", "박성진", "주한송", "최제일", "심용진", "박종길", "하대식", "송원근", "이호엽", "하용준", "김영민", "손승범", "김주연", "주이삭", "이규민" ].includes(c.name);
             const isTightSpacing = ["우영훈", "김태수", "심용진", "김주연"].includes(c.name);
             let styles = [];
-            if (isTightBio || ["하대식", "조동운", "박철현", "김성민", "류태하", "이용우", "이재원", "김병진", "양성혁", "양준모", "김주연", "주이삭", "김태수"].includes(c.name)) {
+            if (isTightBio || ["하대식", "조동운", "박철현", "김성민", "류태하", "이용우", "이재원", "김병진", "양성혁", "양준모", "김주연", "주이삭", "김태수", "이규민"].includes(c.name)) {
                 styles.push("line-height: 1.05");
             }
             if (isTightSpacing) { styles.push("letter-spacing: -0.08em"); }
@@ -2079,6 +2079,7 @@
     </script>
 </body>
 </html>
+
 
 
 
