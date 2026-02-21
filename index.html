@@ -1258,14 +1258,13 @@
 
             const filterByMetro = (metro) => filtered.filter(c => c.category === "기초의원" && c.metropolitan === metro).sort(councilSort);
             const seoulCands = filterByMetro("서울특별시");
-            const busanCands = filterByMetro("부산광역시");
             const daeguCands = filterByMetro("대구광역시");
             const incheonCands = filterByMetro("인천광역시");
             const daejeonCands = filterByMetro("대전광역시");
             const gyeonggiCands = filterByMetro("경기도");
             const chungnamCands = filterByMetro("충청남도");
             const gyeongbukCands = filterByMetro("경상북도");
-            const excluded = ["서울특별시", "부산광역시", "대구광역시", "대전광역시", "인천광역시", "경기도", "경상북도", "충청남도"];
+            const excluded = ["서울특별시", "대구광역시", "대전광역시", "인천광역시", "경기도", "경상북도", "충청남도"];
             const otherCands = filtered.filter(c => !excluded.includes(c.metropolitan) && c.category === "기초의원").sort((a, b) => (regionPriority[a.metropolitan] || 99) - (regionPriority[b.metropolitan] || 99) || councilSort(a, b));
 
             container.innerHTML = `
@@ -1286,7 +1285,6 @@
                 <section id="local-council" class="mb-16 scroll-mt-24">
                     <h2 class="section-title">기초의회의원</h2>
                     ${seoulCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">서울특별시</h3><div class="grid-responsive">${seoulCands.map(createCard).join('')}</div></div>` : ''}
-                    ${busanCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">부산광역시</h3><div class="grid-responsive">${busanCands.map(createCard).join('')}</div></div>` : ''}
                     ${daeguCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대구광역시</h3><div class="grid-responsive">${daeguCands.map(createCard).join('')}</div></div>` : ''}
                     ${incheonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">인천광역시</h3><div class="grid-responsive">${incheonCands.map(createCard).join('')}</div></div>` : ''}
                     ${daejeonCands.length > 0 ? `<div class="mb-8"><h3 class="sub-section-title">대전광역시</h3><div class="grid-responsive">${daejeonCands.map(createCard).join('')}</div></div>` : ''}
@@ -1977,4 +1975,5 @@
         gyeonggiRoot.render(<GyeonggiMapDashboard />);
     </script>
 </body>
+
 </html>
