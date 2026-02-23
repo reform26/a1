@@ -1,4 +1,4 @@
-// search.js - 동네 검색 v9 (ㄱㄴㄷ순 정렬 및 비례후보 후순위 배치 적용)
+// search.js - 동네 검색 v10 (대구광역시 지원, ㄱㄴㄷ순 정렬 및 비례후보 후순위 배치 적용)
 
 (function () {
 
@@ -72,28 +72,31 @@
         return false;
     }
 
-    // ── 3. 상수 및 헬퍼 ────────────────────────────────────────
-    const SEOUL_GUS = ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"];
-
-    function getMetro(districtKey) {
-        return SEOUL_GUS.includes(districtKey.split(' ')[0]) ? "서울특별시" : "경기도";
-    }
-    function getCity(districtKey) { return districtKey.split(' ')[0]; }
-    function isCitySearch(q) { return /[시구군]$/.test(q); }
-
-    function getAllDistricts() {
-        return Object.assign({}, window.SEOUL_INITIAL_DISTRICTS || {}, window.GYEONGGI_INITIAL_DISTRICTS || {});
-    }
-
-    function getDongsInCity(cityName, metropolitan) {
-        const dongs = [];
-        for (const [districtName, data] of Object.entries(getAllDistricts())) {
-            if (getCity(districtName) === cityName && getMetro(districtName) === metropolitan) {
-                dongs.push(...data.dongs);
+    // ── 3. 지역 데이터 파싱 함수 (대구광역시 지원 및 중복 구 방지) ────
+    function getDistrictList() {
+        const list = [];
+        const mapping = [
+            { data: window.SEOUL_INITIAL_DISTRICTS, metro: "서울특별시", short: "서울" },
+            { data: window.GYEONGGI_INITIAL_DISTRICTS, metro: "경기도", short: "경기" },
+            { data: window.DAEGU_INITIAL_DISTRICTS, metro: "대구광역시", short: "대구" }
+        ];
+        
+        for (const map of mapping) {
+            if (!map.data) continue;
+            for (const [key, val] of Object.entries(map.data)) {
+                list.push({
+                    districtName: key,
+                    city: key.split(' ')[0], 
+                    metro: map.metro,
+                    short: map.short,
+                    dongs: val.dongs || []
+                });
             }
         }
-        return dongs;
+        return list;
     }
+
+    function isCitySearch(q) { return /[시구군]$/.test(q); }
 
     // ── 4. 광역의원 선거구 판단 ──────────────────────────────
     function isProvCouncilInCity(c, cityName, cityDongs) {
@@ -157,12 +160,33 @@
         return directHit || districtHit;
     }
 
-    // ── 5. 시/구/군 검색 ──────────────────────────────────────
-    function searchByCity(q) {
-        const isSeoulGu = SEOUL_GUS.includes(q);
-        const metropolitan = isSeoulGu ? "서울특별시" : "경기도";
-        const cityFull = `${isSeoulGu ? '서울' : '경기'} ${q}`;
-        const cityDongs = getDongsInCity(q, metropolitan);
+    // ── 5. 시/구/군 검색 (중복 이름 대응) ───────────────────────
+    function searchByCity(q, forcedMetro = null) {
+        const distList = getDistrictList();
+        const matchedCities = [];
+        
+        for (const item of distList) {
+            if (item.city === q && (!forcedMetro || item.metro === forcedMetro)) {
+                let existing = matchedCities.find(c => c.metro === item.metro && c.city === item.city);
+                if (!existing) {
+                    matchedCities.push({ metro: item.metro, short: item.short, city: item.city, dongs: [...item.dongs] });
+                } else {
+                    existing.dongs.push(...item.dongs);
+                }
+            }
+        }
+
+        if (matchedCities.length === 0) return { found: false };
+
+        // 서울 중구, 대구 중구와 같이 동명이인 도시가 있을 경우 선택하게 유도
+        if (matchedCities.length > 1) {
+            return { found: true, type: 'multi-city', query: q, results: matchedCities };
+        }
+
+        const cityInfo = matchedCities[0];
+        const metropolitan = cityInfo.metro;
+        const cityFull = `${cityInfo.short} ${q}`;
+        const cityDongs = cityInfo.dongs;
 
         const matched = candidates.filter(c => {
             switch (c.category) {
@@ -185,17 +209,16 @@
             }
         });
 
-        if (!matched.length) return { found: false };
         return { found: true, query: q, type: 'city', metropolitan, cityName: q, candidates: matched };
     }
 
     // ── 6. 행정동 검색 (스마트 매칭 적용) ────────────────────────
     function searchByDongName(q) {
-        const allDistricts = getAllDistricts();
+        const distList = getDistrictList();
         
         let isExactMode = false;
-        for (const data of Object.values(allDistricts)) {
-            if (data.dongs.some(dong => dongMatch(dong, q, true))) {
+        for (const item of distList) {
+            if (item.dongs.some(dong => dongMatch(dong, q, true))) {
                 isExactMode = true; 
                 break;
             }
@@ -203,22 +226,25 @@
 
         const matchedDistricts = [];
 
-        for (const [districtName, data] of Object.entries(allDistricts)) {
-            if (data.dongs.some(dong => dongMatch(dong, q, isExactMode))) {
-                matchedDistricts.push({
-                    districtName,
-                    city: getCity(districtName),
-                    metropolitan: getMetro(districtName),
-                    dongs: data.dongs
-                });
+        for (const item of distList) {
+            if (item.dongs.some(dong => dongMatch(dong, q, isExactMode))) {
+                let existing = matchedDistricts.find(d => d.districtName === item.districtName && d.metropolitan === item.metro);
+                if (!existing) {
+                    matchedDistricts.push({
+                        districtName: item.districtName,
+                        city: item.city,
+                        metropolitan: item.metro,
+                        short: item.short,
+                        dongs: item.dongs
+                    });
+                }
             }
         }
         
         if (!matchedDistricts.length) return { found: false };
 
-        const results = matchedDistricts.map(({ districtName, city, metropolitan, dongs }) => {
-            const isSeoulGu = SEOUL_GUS.includes(city);
-            const cityFull = `${isSeoulGu ? '서울' : '경기'} ${city}`;
+        const results = matchedDistricts.map(({ districtName, city, metropolitan, short, dongs }) => {
+            const cityFull = `${short} ${city}`;
             const districtLetter = districtName.match(/([가-힣]+)선거구$/)?.[1];
 
             const 광역단체장 = candidates.filter(c => c.category === "광역단체장" && c.region === metropolitan);
@@ -240,7 +266,7 @@
                 return dongHit || c.district === districtLetter;
             });
 
-            return { districtName, city, metropolitan, dongs, 광역단체장, 기초단체장, 광역의원, 광역지역구의원, 광역비례의원, 기초의원 };
+            return { districtName, city, metropolitan, short, dongs, 광역단체장, 기초단체장, 광역의원, 광역지역구의원, 광역비례의원, 기초의원 };
         });
 
         return { found: true, query: q, type: 'dong', results };
@@ -298,7 +324,7 @@
         }
     });
 
-    // ── 8. 검색 결과 뷰 렌더링 (★정렬 로직 추가★) ────────────
+    // ── 8. 검색 결과 뷰 렌더링 (정렬 로직 추가) ──────────────
     const CAT_ORDER = ["광역단체장", "기초단체장", "광역의원", "기초의원", "기초비례", "재보궐"];
     const CAT_LABEL = {
         "광역단체장": "광역자치단체장",
@@ -343,16 +369,14 @@
             let group = filtered.filter(c => c.category === cat);
             if (!group.length) continue;
 
-            // ★ 정렬 로직: ㄱㄴㄷ순, 비례대표는 맨 끝으로 정렬
+            // 정렬 로직: ㄱㄴㄷ순, 비례대표는 맨 끝으로 정렬
             group.sort((a, b) => {
                 const isBireA = a.constituency === "비례" || a.category.includes("비례");
                 const isBireB = b.constituency === "비례" || b.category.includes("비례");
 
-                // 비례대표 뒤로 밀기
                 if (isBireA && !isBireB) return 1;
                 if (!isBireA && isBireB) return -1;
 
-                // 이름 기준 가나다순 정렬 (localeCompare 사용)
                 const nameA = a.name || "";
                 const nameB = b.name || "";
                 return nameA.localeCompare(nameB, 'ko-KR');
@@ -371,7 +395,7 @@
         lucide.createIcons();
     }
 
-    // ── 9. 검색 박스 UI ───────────────────────────────────────
+    // ── 9. 검색 박스 UI 및 제어 ───────────────────────────────
     window.renderDongSearch = function () {
         const container = document.getElementById('dong-search-root');
         if (!container) return;
@@ -406,7 +430,7 @@
                     </button>
                 </div>
             </div>
-            <p class="text-[10px] text-gray-400 dark:text-slate-600 font-medium mb-1">※ 현재 서울 · 경기 지역만 지원 | 초성 및 오타 검색 지원</p>
+            <p class="text-[10px] text-gray-400 dark:text-slate-600 font-medium mb-1">※ 현재 서울 · 경기 · 대구 지역 지원 | 초성 및 오타 검색 지원</p>
 
             <div id="dong-search-result"></div>
         </div>
@@ -430,13 +454,55 @@
         searchTimeout = setTimeout(() => performDongSearch(value), immediate ? 0 : 450);
     };
 
-    window.selectDongCity = function(query, cityName) {
-        const result = window.searchByDong(query);
-        if (!result || !result.found || result.type !== 'dong') return;
-
-        const filtered = result.results.filter(r => r.city === cityName);
-        applyDongResults(query, filtered);
+    window.selectSpecificCity = function(query, cityName, metroName) {
+        if (isCitySearch(query)) {
+            const result = searchByCity(query, metroName);
+            if (result && result.found) {
+                applyCityResult(result);
+            }
+        } else {
+            const result = searchByDongName(query);
+            if (result && result.found) {
+                const filtered = result.results.filter(r => r.city === cityName && r.metropolitan === metroName);
+                applyDongResults(query, filtered);
+            }
+        }
     };
+
+    function showBannerAndScroll(labelText) {
+        const banner = document.getElementById('search-active-banner');
+        const bannerText = document.getElementById('search-active-text');
+        if (banner && bannerText) {
+            bannerText.textContent = labelText;
+            banner.classList.remove('hidden'); banner.classList.add('flex');
+        }
+        const resetBtn = document.getElementById('search-reset-btn');
+        if (resetBtn) { resetBtn.classList.remove('hidden'); resetBtn.classList.add('flex'); }
+
+        setTimeout(() => {
+            const ca = document.getElementById('content-area');
+            if (ca) ca.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+    }
+
+    function applyCityResult(result) {
+        const resultEl = document.getElementById('dong-search-result');
+        const labelText = `'${result.cityName}' 관련 후보 ${result.candidates.length}명 표시 중`;
+        if (resultEl) {
+            resultEl.innerHTML = `
+            <div class="bg-orange-50 dark:bg-orange-900/20 rounded-xl px-4 py-3 mb-1">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#FF6600]"></i>
+                    <span class="text-xs font-black text-gray-700 dark:text-slate-200">${result.cityName}</span>
+                    <span class="text-[10px] text-gray-400">· 후보 ${result.candidates.length}명</span>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-2">↓ 아래 목록이 검색 결과로 필터링됩니다</p>
+            </div>`;
+            lucide.createIcons();
+        }
+        window.applySearchFilter(result.candidates);
+        showBannerAndScroll(labelText);
+    }
 
     function applyDongResults(query, results) {
         const resultEl = document.getElementById('dong-search-result');
@@ -449,11 +515,10 @@
 
         const infoRows = results.map(r => {
             const total = r.광역단체장.length + r.기초단체장.length + r.광역의원.length + r.기초의원.length;
-            const label = r.metropolitan === '서울특별시' ? '서울' : '경기';
             return `<div class="flex items-center gap-2">
                 <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#FF6600]"></i>
                 <span class="text-xs font-black text-gray-700 dark:text-slate-200">${r.districtName}</span>
-                <span class="text-[10px] text-gray-400">· ${label} · 후보 ${total}명</span>
+                <span class="text-[10px] text-gray-400">· ${r.short} · 후보 ${total}명</span>
             </div>`;
         }).join('');
 
@@ -468,20 +533,7 @@
 
         const labelText = `'${query}' (${results.map(r=>r.city).join(', ')}) 후보 ${matchedCandidates.length}명 표시 중`;
         window.applySearchFilter(matchedCandidates);
-
-        const banner = document.getElementById('search-active-banner');
-        const bannerText = document.getElementById('search-active-text');
-        if (banner && bannerText) {
-            bannerText.textContent = labelText;
-            banner.classList.remove('hidden'); banner.classList.add('flex');
-        }
-        const resetBtn = document.getElementById('search-reset-btn');
-        if (resetBtn) { resetBtn.classList.remove('hidden'); resetBtn.classList.add('flex'); }
-
-        setTimeout(() => {
-            const ca = document.getElementById('content-area');
-            if (ca) ca.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
+        showBannerAndScroll(labelText);
     }
 
     function performDongSearch(query) {
@@ -503,27 +555,39 @@
                     <i data-lucide="map-pin-off" class="w-6 h-6 text-gray-300 dark:text-slate-500"></i>
                 </div>
                 <p class="text-sm font-black text-gray-400">'${query}'을(를) 찾지 못했어요</p>
-                <p class="text-xs text-gray-300 dark:text-slate-600 mt-1">서울·경기 행정동 또는 시·군·구 이름을 입력해 주세요</p>
+                <p class="text-xs text-gray-300 dark:text-slate-600 mt-1">서울·경기·대구 행정동 또는 시·군·구 이름을 입력해 주세요</p>
             </div>`;
             lucide.createIcons();
             return;
         }
 
-        if (result.type === 'dong') {
-            const uniqueCities = [...new Set(result.results.map(r => r.city))];
-            if (uniqueCities.length > 1) {
-                const btnHtml = uniqueCities.map(city => {
-                    const r = result.results.find(r => r.city === city);
-                    const metroLabel = r.metropolitan === '서울특별시' ? '서울' : '경기';
+        if (result.type === 'dong' || result.type === 'multi-city') {
+            const uniqueTargets = [];
+            for (const r of result.results) {
+                const metro = r.metropolitan || r.metro;
+                const key = metro + "_" + r.city;
+                if (!uniqueTargets.some(t => t.key === key)) {
+                    uniqueTargets.push({
+                        key,
+                        city: r.city,
+                        metro: metro,
+                        short: r.short,
+                        desc: result.type === 'dong' ? r.districtName : r.city + ' 전체'
+                    });
+                }
+            }
+
+            if (uniqueTargets.length > 1) {
+                const btnHtml = uniqueTargets.map(t => {
                     return `
-                    <button onclick="selectDongCity('${query}', '${city}')"
+                    <button onclick="selectSpecificCity('${query}', '${t.city}', '${t.metro}')"
                         class="flex items-center gap-3 w-full text-left bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-700 hover:border-[#FF6600] hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-2xl px-4 py-3.5 transition-all group">
                         <div class="bg-orange-100 dark:bg-orange-900/30 group-hover:bg-[#FF6600] p-2 rounded-xl transition-colors flex-shrink-0">
                             <i data-lucide="map-pin" class="w-4 h-4 text-[#FF6600] group-hover:text-white transition-colors"></i>
                         </div>
                         <div>
-                            <p class="font-black text-gray-900 dark:text-white text-sm">${metroLabel} ${city}</p>
-                            <p class="text-[11px] text-gray-400 font-medium mt-0.5">${r.districtName}</p>
+                            <p class="font-black text-gray-900 dark:text-white text-sm">${t.short} ${t.city}</p>
+                            <p class="text-[11px] text-gray-400 font-medium mt-0.5">${t.desc}</p>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 ml-auto flex-shrink-0 group-hover:text-[#FF6600] transition-colors"></i>
                     </button>`;
@@ -544,32 +608,7 @@
         }
 
         if (result.type === 'city') {
-            const labelText = `'${result.cityName}' 관련 후보 ${result.candidates.length}명 표시 중`;
-            if (resultEl) {
-                resultEl.innerHTML = `
-                <div class="bg-orange-50 dark:bg-orange-900/20 rounded-xl px-4 py-3 mb-1">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#FF6600]"></i>
-                        <span class="text-xs font-black text-gray-700 dark:text-slate-200">${result.cityName}</span>
-                        <span class="text-[10px] text-gray-400">· 후보 ${result.candidates.length}명</span>
-                    </div>
-                    <p class="text-[10px] text-gray-400 mt-2">↓ 아래 목록이 검색 결과로 필터링됩니다</p>
-                </div>`;
-                lucide.createIcons();
-            }
-            window.applySearchFilter(result.candidates);
-            const banner = document.getElementById('search-active-banner');
-            const bannerText = document.getElementById('search-active-text');
-            if (banner && bannerText) {
-                bannerText.textContent = labelText;
-                banner.classList.remove('hidden'); banner.classList.add('flex');
-            }
-            const resetBtn = document.getElementById('search-reset-btn');
-            if (resetBtn) { resetBtn.classList.remove('hidden'); resetBtn.classList.add('flex'); }
-            setTimeout(() => {
-                const ca = document.getElementById('content-area');
-                if (ca) ca.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 150);
+            applyCityResult(result);
         } else {
             applyDongResults(query, result.results);
         }
