@@ -47,7 +47,7 @@ const candidates = [
     { name: "김정훈", region: "서울 동대문구", metropolitan: "서울특별시", category: "기초의원", office: "동대문구의원", status: "후보", subRegion: "답십리2동, 장안1동, 장안2동", bio: ["전) 동대문구축구협회 사무국장"], photo: "https://i.imgur.com/cH6JHd7.png", district: "바", sns: { fb: "#", ig: "https://www.instagram.com/orange.ddm/" }, decl: "#", dateAdded: "2026-02-05" },
     { name: "이도윤", region: "서울 동대문구", metropolitan: "서울특별시", category: "기초의원", office: "동대문구의원", status: "출마선언", subRegion: "전농제1동, 전농제2동, 답십리제1동", bio: ["동대문구 마선거구 출마"], photo: "", district: "마", sns: { fb: "#" }, decl: "https://rallypoint.kr/board/politics-free/224812", dateAdded: "2026-01-31" },
     { name: "이호엽", region: "서울 성북구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "성북동, 삼선동, 동선동, 돈암제2동, 안암동, 보문동", bio: ["<span style='letter-spacing:-0.12em;'>개혁신당 성북구 지역발전특위 부위원장</span>"], photo: "https://i.imgur.com/zZEqfNs.png", district: "가", sns: { fb: "#", ig: "https://www.instagram.com/hoyup97/", blog: "https://blog.naver.com/hyl005", site: "https://litt.ly/horang97" }, decl: "https://rallypoint.kr/board/politics-free/225837", dateAdded: "2026-02-12" },
-    { name: "김성우", region: "서울 서대문구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "북아현동, 신촌동, 천연동, 충현동", bio: ["우리부동산 공인중개사", "북아현살집연구소 소장"], photo: "https://i.imgur.com/uVeuzZN.png", district: "가", sns: { blog: "https://blog.naver.com/manksw" }, decl: "#", dateAdded: "2026-02-06" },
+    { name: "김성우", region: "서울 서대문구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "북아현동, 신촌동, 천연동, 충현동", bio: ["개혁신당 서대문구 지역발전특위 부위원장", "우리부동산 공인중개사", "북아현살집연구소 소장"], photo: "https://i.imgur.com/uVeuzZN.png", district: "가", sns: { blog: "https://blog.naver.com/manksw" }, decl: "#", dateAdded: "2026-02-06" },
     { name: "오상균", region: "서울 성동구", metropolitan: "서울특별시", category: "기초의원", office: "성동구의원", status: "후보", subRegion: "마장동, 사근동, 송정동, 용답동", bio: ["성동구 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-01-26" },
     { name: "최성진", region: "서울 구로구", metropolitan: "서울특별시", category: "기초의원", office: "구로구의원", status: "후보", subRegion: "구로제3동, 구로제4동, 가리봉동", bio: ["서울시당 미래희망위원회 위원", "국제개발협력 NGO 근무", "WFK KOICA NGO 봉사단원 파견"], photo: "https://secondteam-newways-feed.s3.ap-northeast-2.amazonaws.com/politicians/profiles/reformguro.webp", district: "바", sns: { fb: "#", blog: "https://blog.naver.com/reformguro" }, decl: "https://rallypoint.kr/board/politics-free/224459", dateAdded: "2026-01-24" },
     { name: "고길주", region: "서울 영등포구", metropolitan: "서울특별시", category: "기초의원", office: "기초의원", status: "후보", subRegion: "신길 6동, 대림1동, 대림2동, 대림3동", bio: ["영등포구 사선거구 후보"], photo: "", district: "사", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
@@ -122,6 +122,7 @@ const candidates = [
 
 
 window.candidates = candidates;
+
 
 
 
