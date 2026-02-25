@@ -69,7 +69,7 @@ const candidates = [
     { name: "우성원", region: "대구 달성군", metropolitan: "대구광역시", category: "기초의원", office: "달성군의원", status: "후보", subRegion: "유가읍, 현풍읍, 구지면", bio: ["달성군 당협위원장"], photo: "https://i.imgur.com/NNtiJ53.jpeg", district: "다", sns: { fb: "https://www.facebook.com/seongwon.woo.3/" }, decl: "https://www.facebook.com/share/p/1D9hTEiQjh/", dateAdded: "2026-01-26" },
     { name: "박철현", region: "대구 동구", metropolitan: "대구광역시", category: "기초의원", office: "동구의원", status: "후보", subRegion: "신천1·2동, 신천3동, 신천4동, 효목1동, 효목2동", bio: ["대구시당 인재위원장", "개혁신당 지역발전특별위 부위원장"], photo: "", district: "다", sns: { ig: "https://www.instagram.com/park___cheol_hyeon/" }, decl: "#", dateAdded: "2026-01-26" },
     { name: "오태훈", region: "대구 수성구", metropolitan: "대구광역시", category: "기초의원", office: "수성구의원", status: "후보", subRegion: "고산1동, 고산2동, 고산3동", bio: ["대구시당 대변인"], photo: "https://i.imgur.com/b5WsxIp.png", district: "라", sns: { fb: "https://www.facebook.com/profile.php?id=100022505341306", ig: "https://www.instagram.com/suseong_taehun", site: "https://litt.ly/ohtaehun" }, decl: "https://www.facebook.com/share/p/1BkSL7Bw2c/", dateAdded: "2026-01-26" },
-    { name: "최윤석", region: "대구 수성구", metropolitan: "대구광역시", category: "기초의원", office: "수성구의원", status: "후보", district: "마", subRegion: "중동, 상동, 두산동, 수성1가동, 수성2.3가동, 수성4가동", bio: ["대구시당 정책위원장", "대한약사회 대외협력본부장"], photo: "", sns: { fb: "#", ig: "https://www.instagram.com/rapaellchoi/" }, decl: "#", dateAdded: "2026-02-09" },
+    { name: "최윤석", region: "대구 수성구", metropolitan: "대구광역시", category: "기초의원", office: "수성구의원", status: "후보", district: "마", subRegion: "중동, 상동, 두산동, 수성1가동, 수성2.3가동, 수성4가동", bio: ["대구시당 정책위원장", "대한약사회 대외협력본부장"], photo: "", sns: { fb: "https://www.facebook.com/yoonseok.choi.98", ig: "https://www.instagram.com/rapaellchoi/" }, decl: "#", dateAdded: "2026-02-09" },
     { name: "성진영", region: "대구 중구", metropolitan: "대구광역시", category: "기초의원", office: "중구의원", status: "후보", subRegion: "동인동, 삼덕동, 성내1동, 남산1동, 대봉1동, 대봉2동", bio: ["대구시당 미래희망위원회 위원", "캠퍼스지부 경북대학교 지부장"], photo: "https://i.imgur.com/fHwNOji.png", district: "가", sns: { ig: "https://www.instagram.com/jyseong_gyeongsan/", blog: "https://blog.naver.com/gom_mal" }, decl: "https://rallypoint.kr/board/politics-free/222667", dateAdded: "2026-02-12" },
     { name: "강신학", region: "인천 연수구", metropolitan: "인천광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "송도2동, 송도4동, 송도5동", bio: ["인천시당 부위원장", "인천시당 소상공인·전략분과위원장"], photo: "https://i.imgur.com/fd8NVNE.jpeg", district: "마", sns: { fb: "https://www.facebook.com/kangsh1" }, decl: "#", dateAdded: "2026-01-26" },
     { name: "이성실", region: "인천 연수구", metropolitan: "인천광역시", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "송도1동, 송도3동", bio: ["개혁신당 연수구 지역발전특위 부위원장"], photo: "https://i.imgur.com/iNFNRAu.jpeg", district: "라", sns: { fb: "#", ig: "https://www.instagram.com/yeonsu.lss/" }, decl: "https://www.instagram.com/p/DU-ZrFOkQ8k", dateAdded: "2026-02-05" },
@@ -122,6 +122,7 @@ const candidates = [
 
 
 window.candidates = candidates;
+
 
 
 
