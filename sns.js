@@ -412,7 +412,7 @@ function buildSNSSection() {
 // ════════════════════════════════════════════════════════════
 //  🔑 YouTube Data API v3 키  ← 발급받은 키를 여기에 입력
 // ════════════════════════════════════════════════════════════
-const YOUTUBE_API_KEY = 'AIzaSyDdae1ZpkUHCjNoaQpP8TZPKdUPHGvd72o';
+const YOUTUBE_API_KEY = 'AIzaSyBKRkxkrf3lPRoYw9nHihymbUcLKjO4C4M';
 
 
 // ════════════════════════════════════════════════════════════
