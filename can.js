@@ -78,7 +78,7 @@ const candidates = [
     { name: "조동운", region: "대전 서구", metropolitan: "대전광역시", category: "기초의원", office: "서구의원", subRegion: "가수원동, 관저1동, 관저2동, 기성동", bio: ["서구 을 당협위원장", "전) 경찰대학 경찰학과 교수", "한국경찰연구원 원장", "법학박사"], photo: "https://i.imgur.com/q8Z5Mst.png", district: "다", sns: { fb: "https://www.facebook.com/c2716898", ig: "https://www.instagram.com/c2716898/" }, decl: "https://www.youtube.com/watch?v=uyHmrX9hypw", dateAdded: "2025-12-01" },
     { name: "김영욱", region: "대전 서구", metropolitan: "대전광역시", category: "기초의원", office: "서구의원", status: "후보", subRegion: "복수동, 도마1동, 도마2동, 정림동", bio: ["대전시당 자문위원"], photo: "https://i.imgur.com/K0dT4FH.jpeg", district: "가", sns: { fb: "#", ig: "https://www.instagram.com/saveourdaejeon_97/" }, decl: "https://rallypoint.kr/board/politics-free/224817", dateAdded: "2026-01-30" },
     { name: "윤서진", region: "대전 유성구", metropolitan: "대전광역시", category: "기초의원", office: "기초의원 후보", subRegion: "온천1동, 온천2동, 노은1동", bio: ["중앙당 미래희망위원회 위원", "대전시당 부위원장", "제35대 KAIST 총학생회장"], photo: "https://i.imgur.com/N24OK0K.jpeg", district: "나", sns: { ig: "https://www.instagram.com/seojin_ys/" }, decl: "https://www.youtube.com/watch?v=YBVriZc5RQc", dateAdded: "2026-01-17" },
-    { name: "박진우", region: "광주 동구", metropolitan: "광주광역시", category: "기초의원", office: "동구의원", status: "후보", subRegion: "충장동, 동명동, 계림1동, 계림2동, 산수1동, 산수2동", bio: ["동구·남구 을 당협위원장", "21대 대선 선대위 홍보부본부장"], photo: "https://i.imgur.com/cah0vOW.png", district: "가", sns: { fb: "https://www.facebook.com/jinu.park.77/about", ig: "https://www.instagram.com/1jwpark/", yt: "https://www.youtube.com/@jinu_park" }, dateAdded: "2026-01-26" },
+    { name: "박진우", region: "광주 동구", metropolitan: "전남광주통합특별시", category: "기초의원", office: "동구의원", status: "후보", subRegion: "충장동, 동명동, 계림1동, 계림2동, 산수1동, 산수2동", bio: ["동구·남구 을 당협위원장", "21대 대선 선대위 홍보부본부장"], photo: "https://i.imgur.com/cah0vOW.png", district: "가", sns: { fb: "https://www.facebook.com/jinu.park.77/about", ig: "https://www.instagram.com/1jwpark/", yt: "https://www.youtube.com/@jinu_park" }, dateAdded: "2026-01-26" },
     { name: "심재현", region: "경기 양주시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "은현면, 남면, 옥정1동, 옥정2동, 은현면, 회천1동, 회천2동, 회천3동", bio: ["양주시 다선거구 후보"], photo: "", district: "다", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
     { name: "김동광", region: "경기 수원시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "매탄1동, 매탄2동, 매탄3동, 매탄4동", bio: ["수원시 아선거구 후보"], photo: "", district: "아", sns: { fb: "#" }, decl: "#", dateAdded: "2026-02-05" },
     { name: "황승빈", region: "경기 수원시", metropolitan: "경기도", category: "기초의원", office: "기초의원 후보", status: "후보", subRegion: "영통구 영통2동, 영통3동, 망포1동, 망포2동", bio: ["<span style='letter-spacing:-0.12em;'>개혁신당 수원시 지역발전특위 부위원장</span>", "경기도당 수원시교통특별위 위원장"], photo: "https://i.imgur.com/kMbaiCJ.jpeg", district: "파", sns: { fb: "#" }, decl: "#", dateAdded: "2026-01-26" },
@@ -125,6 +125,7 @@ const candidates = [
 
 
 window.candidates = candidates;
+
 
 
 
