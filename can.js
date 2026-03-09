@@ -42,7 +42,7 @@ const candidates = [
 
     // ─── 기초의원 ───
     { name: "이규민", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", subRegion: "개포제3동, 일원본동, 일원제1동", bio: ["<span style='letter-spacing:-0.12em;'>개혁신당 강남구 지역발전특위 부위원장</span>", "한국자동차연구원 연구원", "전) 소프트웨어/AI 강사", "전) 더벤처스 대학생 투자심사역"], photo: "", district: "마", sns: { fb: "#", ig: "https://www.instagram.com/gm.lee_official/" }, pledge: "#", decl: "https://www.instagram.com/p/DUll53qEl7Z/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==", dateAdded: "2026-02-05" },
-    { name: "구성도", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", subRegion: "개포1동, 개포2동, 개포4동", bio: ["강남구 라선거구 후보"], photo: "", district: "라", sns: { fb: "#" }, pledge: "#", decl: "#", dateAdded: "2026-02-09" },
+    { name: "구성도", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", subRegion: "개포1동, 개포2동, 개포4동", bio: ["(주)제일기연 대표이사"], photo: "", district: "라", sns: { fb: "#" }, pledge: "#", decl: "#", dateAdded: "2026-02-09" },
     { name: "김동현", region: "서울 강남구", metropolitan: "서울특별시", category: "기초의원", office: "강남구의원", status: "후보", district: "자", subRegion: "삼성1동, 삼성2동, 대치2동", bio: ["건국대학교 캠퍼스 지부원"], photo: "https://i.imgur.com/uzVK2Vj.jpeg", sns: { blog: "https://m.blog.naver.com/PostList.naver?blogId=uada5633" }, pledge: "#", decl: "https://m.blog.naver.com/PostView.naver?blogId=uada5633&logNo=224121263655", focus: "photo-face-focus", dateAdded: "2025-12-01" },
     { name: "김정훈", region: "서울 동대문구", metropolitan: "서울특별시", category: "기초의원", office: "동대문구의원", status: "후보", subRegion: "답십리2동, 장안1동, 장안2동", bio: ["개혁신당 동대문구 지역발전특위 부위원장", "전) 동대문구축구협회 사무국장"], photo: "https://i.imgur.com/cH6JHd7.png", district: "바", sns: { fb: "#", ig: "https://www.instagram.com/orange.ddm/" }, pledge: "#", decl: "#", dateAdded: "2026-02-05" },
     { name: "이도윤", region: "서울 동대문구", metropolitan: "서울특별시", category: "기초의원", office: "동대문구의원", status: "출마선언", subRegion: "전농제1동, 전농제2동, 답십리제1동", bio: ["동대문구 마선거구 출마"], photo: "", district: "마", sns: { fb: "#" }, pledge: "#", decl: "https://rallypoint.kr/board/politics-free/224812", dateAdded: "2026-01-31" },
@@ -141,3 +141,4 @@ const candidates = [
 
 
 window.candidates = candidates;
+
