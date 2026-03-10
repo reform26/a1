@@ -1753,7 +1753,7 @@ const candidates = [
         district: "사",
         subRegion: "중앙동, 금광1동, 금광2동, 은행1동, 은행2동",
         bio: [
-            "성남시 사선거구 후보"
+            "개혁신당 성남시 지역발전특위 부위원장"
         ],
         photo: "",
         sns: {
