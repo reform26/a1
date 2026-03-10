@@ -456,9 +456,15 @@ function renderRankingWidget(containerId) {
     }
 
     subscribeRankings(({ weekly, cumulative }) => {
+        window.__rankData = { weekly, cumulative };
         renderSlider('__slider_cumulative', cumulative, 'total');
         renderSlider('__slider_weekly',     weekly,     'weekly');
     });
+}
+
+// 다크모드 여부 감지 (Tailwind class 방식)
+function isDark() {
+    return document.documentElement.classList.contains('dark');
 }
 
 // 카드 1개 HTML (가로 레이아웃)
@@ -468,19 +474,26 @@ function _sliderCardHTML(item, rank, countKey) {
     const count   = item[countKey] || 0;
     const cand    = typeof candidates !== 'undefined'
         ? candidates.find(c => c.name === item.name) : null;
+    const dark    = isDark();
 
     // 직책에 따라 지역 표시 다르게
-    // 기초단체장/기초의원 → office에서 시군구명 추출
-    // 광역/기타 → region에서 시도명 축약
     let regionShort = '';
     if (cand) {
         const cat = cand.category || '';
         if (cat === '기초단체장' || cat === '기초의원') {
-            // office: "강동구청장" → "강동구", "수원시장" → "수원시", "강남구의원" → "강남구"
-            regionShort = (cand.office || '')
-                .replace(/청장$|시장$|군수$|의원$/, '')  // 직함 제거
-                .replace(/시$|군$|구$/, '')              // 시/군/구 제거
-                .trim();
+            const parts = (cand.region || '').trim().split(' ');
+            if (parts.length >= 2) {
+                regionShort = parts[1].replace(/시$|군$|구$/, '');
+            } else {
+                const cleaned = (cand.office || '')
+                    .replace(/\s*(후보|의회|의원|청장|시장|군수)\s*/g, '')
+                    .replace(/시$|군$|구$/, '')
+                    .trim();
+                regionShort = (cleaned && cleaned !== '기초' && cleaned !== '광역')
+                    ? cleaned
+                    : parts[0].replace('특별시','').replace('광역시','').replace('특별자치시','')
+                        .replace('특별자치도','').replace('도','').trim();
+            }
         } else {
             regionShort = (cand.region || '')
                 .replace('특별시','').replace('광역시','').replace('특별자치시','')
@@ -492,17 +505,25 @@ function _sliderCardHTML(item, rank, countKey) {
     const ringStyle = rank === 1 ? 'border:2.5px solid #FBBF24;'
                     : rank === 2 ? 'border:2.5px solid #CBD5E1;'
                     : rank === 3 ? 'border:2.5px solid #D97706;'
-                    : 'border:1.5px solid #fed7aa;';
+                    : `border:1.5px solid ${dark ? 'rgba(255,186,130,0.25)' : '#fed7aa'};`;
 
-    const bgStyle = rank === 1
-        ? 'background:linear-gradient(135deg,#fff7ed,#ffedd5);'
-        : 'background:transparent;';
-    const bgHover = rank === 1
-        ? 'linear-gradient(135deg,#ffedd5,#fed7aa)'
-        : 'rgba(255,237,213,0.5)';
+    // 다크/라이트 색상 세트
     const bgNormal = rank === 1
-        ? 'linear-gradient(135deg,#fff7ed,#ffedd5)'
+        ? (dark ? 'linear-gradient(135deg,rgba(120,53,15,0.35),rgba(154,52,18,0.25))' : 'linear-gradient(135deg,#fff7ed,#ffedd5)')
         : 'transparent';
+    const bgHover  = rank === 1
+        ? (dark ? 'linear-gradient(135deg,rgba(154,52,18,0.4),rgba(194,65,12,0.35))' : 'linear-gradient(135deg,#ffedd5,#fed7aa)')
+        : (dark ? 'rgba(120,53,15,0.2)' : 'rgba(255,237,213,0.5)');
+
+    const borderColor = rank <= 3
+        ? (dark ? 'rgba(255,102,0,0.25)' : 'rgba(255,102,0,0.15)')
+        : (dark ? 'rgba(255,186,130,0.15)' : 'rgba(255,186,130,0.2)');
+
+    const nameColor    = dark ? '#f1f5f9' : '#1e293b';
+    const regionColor  = dark ? '#64748b' : '#94a3b8';
+    const rankColor    = dark ? '#64748b' : '#9ca3af';
+    const photoBg      = dark ? '#1e293b' : '#fff7ed';
+    const heartBg      = dark ? 'rgba(255,102,0,0.15)' : 'rgba(255,102,0,0.1)';
 
     return `
         <div onclick="openProfileModal && openProfileModal('${item.name}')"
@@ -513,8 +534,8 @@ function _sliderCardHTML(item, rank, countKey) {
                 display:flex; align-items:center; gap:8px;
                 padding:6px 12px 6px 8px;
                 border-radius:99px;
-                ${bgStyle}
-                border:1px solid ${rank <= 3 ? 'rgba(255,102,0,0.15)' : 'rgba(255,186,130,0.2)'};
+                background:${bgNormal};
+                border:1px solid ${borderColor};
                 cursor:pointer; transition:background 0.15s;
                 white-space:nowrap;
             ">
@@ -523,7 +544,7 @@ function _sliderCardHTML(item, rank, countKey) {
             <div style="
                 font-size:${isMedal ? '0.85rem' : '0.6rem'};
                 font-weight:900;
-                color:${isMedal ? 'inherit' : '#9ca3af'};
+                color:${isMedal ? 'inherit' : rankColor};
                 width:${isMedal ? '18px' : '14px'};
                 text-align:center;
                 flex-shrink:0;
@@ -533,9 +554,9 @@ function _sliderCardHTML(item, rank, countKey) {
             <div style="
                 width:32px; height:32px; border-radius:50%;
                 overflow:hidden; flex-shrink:0;
-                background:#fff7ed;
+                background:${photoBg};
                 ${ringStyle}
-                box-shadow:0 1px 4px rgba(0,0,0,0.1);
+                box-shadow:0 1px 4px rgba(0,0,0,${dark ? '0.3' : '0.1'});
             ">
                 ${cand?.photo
                     ? `<img src="${cand.photo}" style="width:100%;height:100%;object-fit:cover;object-position:center top;" loading="lazy" alt="${item.name}">`
@@ -543,15 +564,15 @@ function _sliderCardHTML(item, rank, countKey) {
             </div>
 
             <!-- 이름 -->
-            <div style="font-size:0.72rem;font-weight:900;color:#1e293b;flex-shrink:0;">${item.name}</div>
+            <div style="font-size:0.72rem;font-weight:900;color:${nameColor};flex-shrink:0;">${item.name}</div>
 
             <!-- 지역 -->
-            <div style="font-size:0.62rem;font-weight:600;color:#94a3b8;flex-shrink:0;">${regionShort}</div>
+            <div style="font-size:0.62rem;font-weight:600;color:${regionColor};flex-shrink:0;">${regionShort}</div>
 
             <!-- 하트 + 개수 -->
             <div style="
                 display:flex;align-items:center;gap:2px;
-                background:rgba(255,102,0,0.1);
+                background:${heartBg};
                 padding:2px 7px;border-radius:99px;
                 flex-shrink:0;
             ">
@@ -578,9 +599,15 @@ function renderSlider(sliderId, list, countKey) {
         return;
     }
 
-    // TOP 15만
+    // TOP 15만, 무한루프를 위해 카드 3벌 복제
     const top15 = list.slice(0, 15);
-    el.innerHTML = top15.map((item, i) => _sliderCardHTML(item, i + 1, countKey)).join('');
+    const cardHTML = top15.map((item, i) => _sliderCardHTML(item, i + 1, countKey)).join('');
+    el.innerHTML = cardHTML + cardHTML + cardHTML;  // 3벌 복제
+    // 2번째 벌 시작 위치로 초기 스크롤 (앞뒤로 여유)
+    requestAnimationFrame(() => {
+        const oneSetWidth = el.scrollWidth / 3;
+        el.scrollLeft = oneSetWidth;
+    });
 
     // ── 드래그/스와이프 ──
     let isDown = false, startX = 0, scrollLeft = 0, hasDragged = false;
@@ -597,7 +624,10 @@ function renderSlider(sliderId, list, countKey) {
         isDown = false;
         el.style.cursor = 'grab';
         if (!hasDragged) return;
-        // 드래그 후 일정 시간 뒤 자동 스크롤 재개
+        // 드래그로 범위 벗어난 경우 중간 벌로 보정
+        const oneSet = el.scrollWidth / 3;
+        if (el.scrollLeft < oneSet * 0.5) el.scrollLeft += oneSet;
+        if (el.scrollLeft > oneSet * 2.5) el.scrollLeft -= oneSet;
         setTimeout(() => startAutoScroll(sliderId, el), 2000);
     };
     const onMove = (e) => {
@@ -631,11 +661,11 @@ function startAutoScroll(id, el) {
     if (_sliderTimers[id]) return;
     _sliderTimers[id] = setInterval(() => {
         if (!el || !el.isConnected) { clearInterval(_sliderTimers[id]); return; }
-        // 끝에 도달하면 처음으로
-        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
-            el.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-            el.scrollBy({ left: 1, behavior: 'auto' });
+        el.scrollLeft += 1;
+        // 무한루프: 3벌 중 마지막 벌 진입 시 → 중간 벌로 순간이동 (눈에 안 보임)
+        const oneSet = el.scrollWidth / 3;
+        if (el.scrollLeft >= oneSet * 2) {
+            el.scrollLeft -= oneSet;
         }
     }, 20);
 }
@@ -653,6 +683,15 @@ function stopAutoScroll(id) {
 
 function initCheers() {
     renderRankingWidget('cheers-ranking-root');
+
+    // 다크모드 토글 시 슬라이더 색상 즉시 재렌더
+    const observer = new MutationObserver(() => {
+        if (window.__rankData) {
+            renderSlider('__slider_cumulative', window.__rankData.cumulative, 'total');
+            renderSlider('__slider_weekly',     window.__rankData.weekly,     'weekly');
+        }
+    });
+    observer.observe(document.documentElement, { attributeFilter: ['class'] });
 }
 
 if (document.readyState === 'loading') {
