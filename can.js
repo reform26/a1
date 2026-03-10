@@ -603,7 +603,7 @@ const candidates = [
             "개혁신당 노형동 지역발전특별위원장",
             "부마정치연구소장"
         ],
-        photo: "",
+        photo: "https://i.imgur.com/kvf3Ifn.png",
         sns: {
             fb: "#",
             ig: "https://www.instagram.com/gw_jeju/"
