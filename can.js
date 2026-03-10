@@ -154,7 +154,7 @@ const candidates = [
         ],
         photo: "https://image.dnews.co.kr/photo/photo/2024/11/21/202411211945335960037-2-565966.jpg",
         sns: {
-            fb: "https://www.facebook.com/profile.php?id=61557084968016",
+            fb: "https://www.facebook.com/p/%ED%95%98%ED%97%8C%ED%9C%98-61562035792083/",
             ig: "https://www.instagram.com/reform_lawyer/",
             yt: "https://www.youtube.com/@%EC%84%B8%EC%A2%85%ED%95%98%ED%97%8C%ED%9C%98%EB%B3%80%ED%98%B8%EC%82%AC"
         },
