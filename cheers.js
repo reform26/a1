@@ -480,7 +480,7 @@ function _sliderCardHTML(item, rank, countKey) {
     let regionShort = '';
     if (cand) {
         const cat = cand.category || '';
-        if (cat === '기초단체장' || cat === '기초의원') {
+        if (cat === '기초단체장' || cat === '기초의원' || cat === '광역의원') {
             const parts = (cand.region || '').trim().split(' ');
             if (parts.length >= 2) {
                 regionShort = parts[1].replace(/시$|군$|구$/, '');
