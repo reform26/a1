@@ -461,71 +461,102 @@ function renderRankingWidget(containerId) {
     });
 }
 
-// 카드 1개 HTML
+// 카드 1개 HTML (가로 레이아웃)
 function _sliderCardHTML(item, rank, countKey) {
-    const medals   = ['🥇','🥈','🥉'];
-    const isMedal  = rank <= 3;
-    const count    = item[countKey] || 0;
-    const cand     = typeof candidates !== 'undefined'
+    const medals  = ['🥇','🥈','🥉'];
+    const isMedal = rank <= 3;
+    const count   = item[countKey] || 0;
+    const cand    = typeof candidates !== 'undefined'
         ? candidates.find(c => c.name === item.name) : null;
 
-    // 지역 축약 (서울특별시 → 서울, 경기도 → 경기 등)
-    const regionShort = (cand?.region || '')
-        .replace('특별시','').replace('광역시','').replace('특별자치시','')
-        .replace('특별자치도','').replace('도','').replace('특별','')
-        .trim().split(' ')[0];
+    // 직책에 따라 지역 표시 다르게
+    // 기초단체장/기초의원 → office에서 시군구명 추출
+    // 광역/기타 → region에서 시도명 축약
+    let regionShort = '';
+    if (cand) {
+        const cat = cand.category || '';
+        if (cat === '기초단체장' || cat === '기초의원') {
+            // office: "강동구청장" → "강동구", "수원시장" → "수원시", "강남구의원" → "강남구"
+            regionShort = (cand.office || '')
+                .replace(/청장$|시장$|군수$|의원$/, '')  // 직함 제거
+                .replace(/시$|군$|구$/, '')              // 시/군/구 제거
+                .trim();
+        } else {
+            regionShort = (cand.region || '')
+                .replace('특별시','').replace('광역시','').replace('특별자치시','')
+                .replace('특별자치도','').replace('도','').replace('특별','')
+                .trim().split(' ')[0];
+        }
+    }
 
-    // 링 색상 (1~3등)
     const ringStyle = rank === 1 ? 'border:2.5px solid #FBBF24;'
                     : rank === 2 ? 'border:2.5px solid #CBD5E1;'
                     : rank === 3 ? 'border:2.5px solid #D97706;'
-                    : 'border:2px solid #fed7aa;';
+                    : 'border:1.5px solid #fed7aa;';
+
+    const bgStyle = rank === 1
+        ? 'background:linear-gradient(135deg,#fff7ed,#ffedd5);'
+        : 'background:transparent;';
+    const bgHover = rank === 1
+        ? 'linear-gradient(135deg,#ffedd5,#fed7aa)'
+        : 'rgba(255,237,213,0.5)';
+    const bgNormal = rank === 1
+        ? 'linear-gradient(135deg,#fff7ed,#ffedd5)'
+        : 'transparent';
 
     return `
         <div onclick="openProfileModal && openProfileModal('${item.name}')"
+            onmouseenter="this.style.background='${bgHover}'"
+            onmouseleave="this.style.background='${bgNormal}'"
             style="
                 flex-shrink:0;
-                display:flex; flex-direction:column; align-items:center;
-                gap:4px; padding:6px 8px;
-                border-radius:14px;
-                background:${rank === 1 ? 'linear-gradient(135deg,#fff7ed,#ffedd5)' : 'transparent'};
+                display:flex; align-items:center; gap:8px;
+                padding:6px 12px 6px 8px;
+                border-radius:99px;
+                ${bgStyle}
+                border:1px solid ${rank <= 3 ? 'rgba(255,102,0,0.15)' : 'rgba(255,186,130,0.2)'};
                 cursor:pointer; transition:background 0.15s;
-                min-width:68px;
-            "
-            onmouseenter="this.style.background='${rank===1?'linear-gradient(135deg,#ffedd5,#fed7aa)':'rgba(255,237,213,0.5)'}'"
-            onmouseleave="this.style.background='${rank===1?'linear-gradient(135deg,#fff7ed,#ffedd5)':'transparent'}'">
+                white-space:nowrap;
+            ">
 
             <!-- 순위 -->
-            <div style="font-size:${isMedal?'0.85rem':'0.62rem'};font-weight:900;
-                line-height:1; color:${isMedal?'inherit':'#9ca3af'};
-                height:16px; display:flex; align-items:center;">
-                ${isMedal ? medals[rank-1] : rank}
-            </div>
+            <div style="
+                font-size:${isMedal ? '0.85rem' : '0.6rem'};
+                font-weight:900;
+                color:${isMedal ? 'inherit' : '#9ca3af'};
+                width:${isMedal ? '18px' : '14px'};
+                text-align:center;
+                flex-shrink:0;
+            ">${isMedal ? medals[rank-1] : rank}</div>
 
             <!-- 원형 사진 -->
-            <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;
-                background:#fff7ed; ${ringStyle} box-shadow:0 2px 6px rgba(0,0,0,0.1); flex-shrink:0;">
+            <div style="
+                width:32px; height:32px; border-radius:50%;
+                overflow:hidden; flex-shrink:0;
+                background:#fff7ed;
+                ${ringStyle}
+                box-shadow:0 1px 4px rgba(0,0,0,0.1);
+            ">
                 ${cand?.photo
                     ? `<img src="${cand.photo}" style="width:100%;height:100%;object-fit:cover;object-position:center top;" loading="lazy" alt="${item.name}">`
-                    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-                        font-weight:900;font-size:0.85rem;color:#fb923c;">${item.name[0]}</div>`}
+                    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.75rem;color:#fb923c;">${item.name[0]}</div>`}
             </div>
 
             <!-- 이름 -->
-            <div style="font-size:0.68rem;font-weight:900;color:#1e293b;
-                max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-                text-align:center;" class="dark:text-white">${item.name}</div>
+            <div style="font-size:0.72rem;font-weight:900;color:#1e293b;flex-shrink:0;">${item.name}</div>
 
             <!-- 지역 -->
-            <div style="font-size:0.58rem;font-weight:600;color:#94a3b8;
-                max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-                text-align:center;">${regionShort}</div>
+            <div style="font-size:0.62rem;font-weight:600;color:#94a3b8;flex-shrink:0;">${regionShort}</div>
 
             <!-- 하트 + 개수 -->
-            <div style="display:flex;align-items:center;gap:2px;
-                background:rgba(255,102,0,0.1);padding:2px 7px;border-radius:99px;">
-                <span style="font-size:0.65rem;line-height:1;">🧡</span>
-                <span style="font-size:0.62rem;font-weight:900;color:#FF6600;">${count.toLocaleString()}</span>
+            <div style="
+                display:flex;align-items:center;gap:2px;
+                background:rgba(255,102,0,0.1);
+                padding:2px 7px;border-radius:99px;
+                flex-shrink:0;
+            ">
+                <span style="font-size:0.6rem;line-height:1;">🧡</span>
+                <span style="font-size:0.65rem;font-weight:900;color:#FF6600;">${count.toLocaleString()}</span>
             </div>
         </div>
     `;
