@@ -481,6 +481,12 @@ function _sliderCardHTML(item, rank, countKey) {
     if (cand) {
         const cat = cand.category || '';
         if (cat === '기초단체장' || cat === '기초의원' || cat === '광역의원') {
+            // 광역의원은 district 필드 우선 ("서대문 1" → "서대문", "수성 3" → "수성")
+            // district가 숫자만이거나 빈값이면 region 폴백
+            if (cat === '광역의원' && cand.district && !/^\d+$/.test(cand.district.trim())) {
+                regionShort = cand.district.trim().split(' ')[0]
+                    .replace(/시$|군$|구$/, '');
+            } else {
             const parts = (cand.region || '').trim().split(' ');
             if (parts.length >= 2) {
                 regionShort = parts[1].replace(/시$|군$|구$/, '');
@@ -493,6 +499,7 @@ function _sliderCardHTML(item, rank, countKey) {
                     ? cleaned
                     : parts[0].replace('특별시','').replace('광역시','').replace('특별자치시','')
                         .replace('특별자치도','').replace('도','').trim();
+            }
             }
         } else {
             regionShort = (cand.region || '')
