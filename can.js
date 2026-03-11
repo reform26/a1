@@ -731,7 +731,7 @@ const candidates = [
         subRegion: "답십리2동, 장안1동, 장안2동",
         bio: [
             "서울시당 대변인",
-            "개혁신당 동대문구 지역발전특위 부위원장",
+            "<span style='letter-spacing:-0.12em;'>개혁신당 동대문구 지역발전특위 부위원장</span>",
             "전) 동대문구축구협회 사무국장"
         ],
         photo: "https://i.imgur.com/cH6JHd7.png",
