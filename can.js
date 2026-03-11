@@ -2101,7 +2101,7 @@ const candidates = [
         status: "후보",
         subRegion: "본오3동, 사동, 사이동, 해양동",
         bio: [
-            "안산시 가선거구 후보"
+            "개혁신당 안산시 지역발전특위 부위원장"
         ],
         photo: "https://i.imgur.com/nihgF8a.png",
         district: "가",
