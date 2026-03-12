@@ -861,7 +861,11 @@
             <div class="p-8 text-center">
                 <h2 class="text-2xl font-black mb-1 tracking-wider" id="modal-name">후보 이름</h2>
                 <p class="text-[#FF6600] font-bold text-sm mb-1 leading-tight" id="modal-office">출마선언</p>
-                <p class="text-gray-400 dark:text-slate-400 font-medium text-[11px] mb-6" id="modal-subregion"></p>
+                <p class="text-gray-400 dark:text-slate-400 font-medium text-[11px] mb-4" id="modal-subregion"></p>
+                <div id="modal-bio-section" class="hidden mb-6 text-left bg-gray-50 dark:bg-slate-800 rounded-2xl px-4 py-3 border border-gray-100 dark:border-slate-700">
+                    <p class="text-[10px] font-black text-[#FF6600] mb-2 tracking-wider uppercase">약력</p>
+                    <ul id="modal-bio-list" class="space-y-1"></ul>
+                </div>
                 <div class="flex justify-center gap-4 mb-8" id="modal-sns-container">
                     <a id="modal-fb" href="#" target="_blank" class="sns-btn fb"><i data-lucide="facebook"></i></a>
                     <a id="modal-ig" href="#" target="_blank" class="sns-btn ig"><i data-lucide="instagram"></i></a>
@@ -1378,6 +1382,21 @@
             
             const subRegionEl = document.getElementById('modal-subregion');
             subRegionEl.innerText = c.subRegion || "";
+
+            const bioSection = document.getElementById('modal-bio-section');
+            const bioList = document.getElementById('modal-bio-list');
+            if (c.bio && c.bio.length > 0) {
+                bioList.innerHTML = c.bio.map(line =>
+                    `<li class="flex items-start gap-2 text-[12px] font-medium text-gray-700 dark:text-slate-300 leading-snug">
+                        <span class="mt-[4px] w-[5px] h-[5px] rounded-full bg-[#FF6600] shrink-0"></span>
+                        <span>${line}</span>
+                    </li>`
+                ).join('');
+                bioSection.classList.remove('hidden');
+            } else {
+                bioSection.classList.add('hidden');
+            }
+
             document.getElementById('modal-photo-area').innerHTML = c.photo 
                 ? `<img src="${c.photo}" class="w-full h-full object-contain" style="object-position: center top" alt="개혁신당 ${c.name} 후보 프로필">` 
                 : `<div class="no-photo-placeholder"><i data-lucide="user-round" class="w-12 h-12"></i><span>이미지 준비중</span></div>`;
