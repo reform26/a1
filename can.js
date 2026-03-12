@@ -3013,86 +3013,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
-        ]
-    },
-    {
-        name: "권민찬",
-        region: "부산 금정구",
-        metropolitan: "부산광역시",
-        category: "기초의원",
-        office: "금정구의회",
-        status: "후보",
-        subRegion: "남산동, 구서2동",
-        bio: [
-            "금정구 라선거구 후보"
-        ],
-        photo: "",
-        district: "라        status: "후보",
-        subRegion: "안중읍, 포승읍, 청북읍, 오성면, 현덕면",
-        bio: [
-            "평택시 바선거구 후보"
-        ],
-        photo: "",
-        district: "바",
-        sns: {
-            fb: "#"
-        },
-        pledge: "#",
-        decl: "#",
-        dateAdded: "2026-03-09",
-        coords: [
-            36.998,
-            126.8369
-        ]
-    },
-    {
-        name: "홍웅표",
-        region: "경북 영주시",
-        metropolitan: "경상북도",
-        category: "기초의원",
-        office: "영주시의회",
-        status: "후보",
-        subRegion: "휴천1동, 휴천2동",
-        bio: [
-            "영주시 마선거구 후보"
-        ],
-        photo: "",
-        district: "마",
-        sns: {
-            fb: "#"
-        },
-        pledge: "#",
-        decl: "#",
-        dateAdded: "2026-03-09",
-        coords: [
-            36.8043,
-            128.6178
-        ]
-    },
-    {
-        name: "양현성",
-        region: "서울 강남구",
-        metropolitan: "서울특별시",
-        category: "기초의원",
-        office: "강남구의회",
-        status: "후보",
-        subRegion: "압구정동, 청담동",
-        bio: [
-            "강남구 나선거구 후보"
-        ],
-        photo: "",
-        district: "나",
-        sns: {
-            fb: "#"
-        },
-        pledge: "#",
-        decl: "#",
-        dateAdded: "2026-03-12",
-        coords: [
-            ,
-            
+            37.5271,
+            127.0355
         ]
     },
     {
@@ -3115,8 +3037,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
+            35.2375,
+            129.0927
         ]
     },
     {
@@ -3139,8 +3061,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
+            37.4292,
+            126.9879
         ]
     },
     {
@@ -3163,8 +3085,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
+            37.665,
+            126.7699
         ]
     },
     {
@@ -3187,8 +3109,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
+            37.4914,
+            127.4875
         ]
     },
     {
@@ -3211,8 +3133,8 @@ const candidates = [
         decl: "#",
         dateAdded: "2026-03-12",
         coords: [
-            ,
-            
+            37.2012,
+            127.075
         ]
     },    
 ];
