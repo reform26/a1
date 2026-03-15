@@ -222,6 +222,17 @@ function renderRow1(items) {
                 </div>
             </div>`;
     }).join('');
+
+    // 무한루프를 위해 카드 3벌 복제
+    const originalHTML = track.innerHTML;
+    track.innerHTML = originalHTML + originalHTML + originalHTML;
+
+    // 2번째 벌 시작 위치로 초기 스크롤
+    const scrollWrap = track.parentElement;
+    requestAnimationFrame(() => {
+        scrollWrap.scrollLeft = scrollWrap.scrollWidth / 3;
+        startAutoScroll(scrollWrap);
+    });
 }
 
 // ════════════════════════════════════════════════════════════
@@ -404,9 +415,16 @@ function initDragScroll(el) {
     el.addEventListener('mousedown', e => {
         isDown = true; hasDragged = false; el.classList.add('dragging'); setOverlayPointer(true);
         startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft; e.preventDefault();
+        stopAutoScroll(el);
     });
-    el.addEventListener('mouseleave', () => { isDown = false; el.classList.remove('dragging'); setOverlayPointer(false); });
-    el.addEventListener('mouseup', () => { isDown = false; el.classList.remove('dragging'); setTimeout(() => setOverlayPointer(false), 50); });
+    el.addEventListener('mouseleave', () => {
+        isDown = false; el.classList.remove('dragging'); setOverlayPointer(false);
+        startAutoScroll(el);
+    });
+    el.addEventListener('mouseup', () => {
+        isDown = false; el.classList.remove('dragging'); setTimeout(() => setOverlayPointer(false), 50);
+        setTimeout(() => startAutoScroll(el), 1500);
+    });
     el.addEventListener('mousemove', e => {
         if (!isDown) return;
         const walk = (e.pageX - el.offsetLeft - startX) * 1.2;
@@ -418,13 +436,38 @@ function initDragScroll(el) {
     let touchStartX = 0, touchScrollLeft = 0, touchMoved = false;
     el.addEventListener('touchstart', e => {
         touchStartX = e.touches[0].pageX; touchScrollLeft = el.scrollLeft; touchMoved = false;
+        stopAutoScroll(el);
     }, { passive: true });
     el.addEventListener('touchmove', e => {
         const dx = touchStartX - e.touches[0].pageX;
         if (Math.abs(dx) > 5) touchMoved = true;
         el.scrollLeft = touchScrollLeft + dx;
     }, { passive: true });
-    el.addEventListener('touchend', e => { if (touchMoved) e.stopPropagation(); }, true);
+    el.addEventListener('touchend', e => {
+        if (touchMoved) e.stopPropagation();
+        setTimeout(() => startAutoScroll(el), 1500);
+    }, true);
+}
+
+// ── 자동 스크롤 (좌→우 무한루프) ──
+const _snsAutoScrollTimers = new WeakMap();
+
+function startAutoScroll(el) {
+    if (!el || _snsAutoScrollTimers.has(el)) return;
+    const timer = setInterval(() => {
+        if (!el.isConnected) { clearInterval(timer); _snsAutoScrollTimers.delete(el); return; }
+        el.scrollLeft += 1;
+        // 무한루프: 3벌 중 마지막 벌 진입 시 → 중간 벌로 순간이동
+        const oneSet = el.scrollWidth / 3;
+        if (el.scrollLeft >= oneSet * 2) el.scrollLeft -= oneSet;
+    }, 20);
+    _snsAutoScrollTimers.set(el, timer);
+}
+
+function stopAutoScroll(el) {
+    if (!el) return;
+    const timer = _snsAutoScrollTimers.get(el);
+    if (timer) { clearInterval(timer); _snsAutoScrollTimers.delete(el); }
 }
 
 // ════════════════════════════════════════════════════════════

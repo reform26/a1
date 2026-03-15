@@ -420,15 +420,6 @@
         .modal-share-btn:hover { background: #fff7ed; transform: translateY(-1px); }
         .dark .modal-share-btn:hover { background: #1e293b; }
 
-        /* ── 카테고리 배지 ── */
-        .modal-category-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: #fff0e6; border: 1px solid rgba(255,102,0,0.25);
-            border-radius: 8px; padding: 3px 10px; margin-bottom: 12px;
-        }
-        .dark .modal-category-badge { background: rgba(255,102,0,0.12); border-color: rgba(255,102,0,0.3); }
-        .modal-category-badge span { font-size: 0.63rem; font-weight: 900; color: #FF6600; letter-spacing: 0.04em; }
-
         /* ── 구분선 ── */
         .modal-divider {
             height: 1px; background: #f0ede8; margin: 14px 0 16px;
@@ -465,7 +456,7 @@
 
         /* ── 액션 버튼 ── */
         #modal-declaration {
-            display: flex !important; align-items: center; justify-content: center; gap: 7px;
+            align-items: center; justify-content: center; gap: 7px;
             padding: 13px 16px !important;
             background: #FF6600 !important; color: white !important;
             border-radius: 14px !important; font-weight: 900 !important;
@@ -475,7 +466,7 @@
         }
         #modal-declaration:hover { opacity: 0.88; }
         #modal-pledge {
-            display: flex !important; align-items: center; justify-content: center; gap: 7px;
+            align-items: center; justify-content: center; gap: 7px;
             padding: 12px 16px !important; margin-top: 10px !important;
             background: white !important; color: #FF6600 !important;
             border-radius: 14px !important; font-weight: 900 !important;
@@ -1142,12 +1133,6 @@
 
                 <!-- 상단 영역 -->
                 <div>
-                    <!-- 카테고리 배지 -->
-                    <div class="modal-category-badge" id="modal-category-badge">
-                        <div style="width:6px;height:6px;border-radius:50%;background:#FF6600;flex-shrink:0;"></div>
-                        <span id="modal-category-text">후보</span>
-                    </div>
-
                     <!-- 이름 -->
                     <h2 class="text-3xl font-black mb-1 tracking-tight text-left" id="modal-name">후보 이름</h2>
 
@@ -1667,13 +1652,7 @@
             document.getElementById('modal-name').innerText = c.name;
             currentModalCandidateName = c.name;
 
-            // 카테고리 배지
-            const categoryMap = {
-                '광역단체장': '광역단체장', '기초단체장': '기초단체장',
-                '광역의원': '광역의원', '기초의원': '기초의원', '재보궐선거': '재보궐'
-            };
-            const badgeEl = document.getElementById('modal-category-text');
-            if (badgeEl) badgeEl.innerText = categoryMap[c.category] || c.category || '후보';
+            // 카테고리 배지 제거됨
             
             const isConfirmed = (c.status === "후보" && c.name !== "김성민" && c.name !== "이수찬");
             let statusLabel = isConfirmed ? "후보" : (c.name === "이유원" ? "출마예정" : ((c.decl && c.decl !== "#") ? "출마선언" : "출마예정"));
@@ -1736,7 +1715,7 @@
             
             const declBtn = document.getElementById('modal-declaration');
             if (c.decl && c.decl !== "#") {
-                declBtn.style.display = 'block';
+                declBtn.style.display = 'flex';
                 declBtn.href = c.decl;
             } else {
                 declBtn.style.display = 'none';
@@ -1744,7 +1723,7 @@
 
             const pledgeBtn = document.getElementById('modal-pledge');
             if (c.pledge && c.pledge !== "#") {
-                pledgeBtn.style.display = 'block';
+                pledgeBtn.style.display = 'flex';
                 pledgeBtn.href = c.pledge;
             } else {
                 pledgeBtn.style.display = 'none';
