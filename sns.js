@@ -15,7 +15,7 @@
         #sns-feed-section { padding: 0 1rem; margin-top: 1rem; margin-bottom: 1rem; }
         @media (min-width: 768px) { #sns-feed-section { padding: 0 2.5rem; } }
         #sns-feed-inner { max-width: 80rem; margin: 0 auto; }
-        .sns-feed-scroll-wrap { overflow-x: auto; padding-bottom: 8px; -ms-overflow-style: none; scrollbar-width: none; user-select: none; }
+        .sns-feed-scroll-wrap { overflow-x: auto; width: 100%; padding-bottom: 8px; -ms-overflow-style: none; scrollbar-width: none; user-select: none; }
         @media (hover: hover) { .sns-feed-scroll-wrap { cursor: grab; } .sns-feed-scroll-wrap.dragging { cursor: grabbing; } }
         .sns-feed-scroll-wrap::-webkit-scrollbar { display: none; }
         .sns-feed-type-badge { display: none; }
@@ -227,11 +227,17 @@ function renderRow1(items) {
     const originalHTML = track.innerHTML;
     track.innerHTML = originalHTML + originalHTML + originalHTML;
 
-    // 2번째 벌 시작 위치로 초기 스크롤
+    // scrollWrap에 width 강제 (track이 넘쳐야 스크롤 발생)
     const scrollWrap = track.parentElement;
+    if (scrollWrap) scrollWrap.style.width = '100%';
+
+    // 레이아웃 완전 계산 후 초기 스크롤 위치 + 자동 스크롤 시작
     requestAnimationFrame(() => {
-        scrollWrap.scrollLeft = scrollWrap.scrollWidth / 3;
-        startAutoScroll(scrollWrap);
+        requestAnimationFrame(() => {
+            const oneSet = scrollWrap.scrollWidth / 3;
+            scrollWrap.scrollLeft = oneSet;
+            startAutoScroll(scrollWrap);
+        });
     });
 }
 

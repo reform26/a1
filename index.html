@@ -1658,14 +1658,14 @@
             let statusLabel = isConfirmed ? "후보" : (c.name === "이유원" ? "출마예정" : ((c.decl && c.decl !== "#") ? "출마선언" : "출마예정"));
             
             let displayOfficeLabel = "";
-            if (c.name === "서운교") displayOfficeLabel = "대구광역시의회 수성구 제3선거구 후보";
-            else if (c.name === "양해두") displayOfficeLabel = "제주특별자치도의회 제주시 외도동·이호동·도두동 선거구 후보";
-            else if (c.name === "이건우") displayOfficeLabel = "제주특별자치도의회 제주시 노형동 을 선거구 후보";
-            else if (c.name === "최현석") displayOfficeLabel = "서울특별시의회 송파구 제2 선거구 후보";
-            else if (c.name === "이재원") displayOfficeLabel = "서울특별시의회 비례대표 출마예정";
-            else if (c.name === "강인수") displayOfficeLabel = "서울특별시의회 강남구 제1 선거구 후보";
-            else if (c.name === "주이삭") displayOfficeLabel = "서울특별시의회 서대문구 제1 선거구 출마선언";   
-            else if (c.name === "김순주") displayOfficeLabel = "세종특별자치시의회 제4 선거구 후보";
+            if (c.name === "서운교") displayOfficeLabel = `대구광역시의회 수성구 제3선거구 ${statusLabel}`;
+            else if (c.name === "양해두") displayOfficeLabel = `제주특별자치도의회 제주시 외도동·이호동·도두동 선거구 ${statusLabel}`;
+            else if (c.name === "이건우") displayOfficeLabel = `제주특별자치도의회 제주시 노형동 을 선거구 ${statusLabel}`;
+            else if (c.name === "최현석") displayOfficeLabel = `서울특별시의회 송파구 제2 선거구 ${statusLabel}`;
+            else if (c.name === "이재원") displayOfficeLabel = `서울특별시의회 비례대표 ${statusLabel}`;
+            else if (c.name === "강인수") displayOfficeLabel = `서울특별시의회 강남구 제1 선거구 ${statusLabel}`;
+            else if (c.name === "주이삭") displayOfficeLabel = `서울특별시의회 서대문구 제1 선거구 ${statusLabel}`;
+            else if (c.name === "김순주") displayOfficeLabel = `세종특별자치시의회 제4 선거구 ${statusLabel}`;
             else {
                 let districtLabel = c.district ? ` ${c.district}선거구` : "";
                 const displayOffice = getCleanOffice(c);
